@@ -2,3 +2,8 @@
 export const SITE_NAME = "devdrawer";
 export const GITHUB_URL = "https://github.com/apreezofficial/devdrawer";
 export const AUTHOR_X_URL = "https://x.com/apcodesphere";
+export const SITE_URL = "https://www.devdrawer.xyz";
+export const AUTHOR_X_HANDLE = "@apcodesphere";
+export const SITE_TAGLINE = "Every tool a developer ends up Googling";
+export const SITE_DESCRIPTION =
+  "54 free developer tools in one place: JSON formatter, regex tester, UUID, hash, JWT decoder, Base64, QR code, cron, color picker, image compressor and more. Open source and 100% in your browser.";
