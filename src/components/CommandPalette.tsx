@@ -74,7 +74,7 @@ export function CommandPalette() {
 export function PaletteButton() {
   return (
     <button className="kbd-btn" onClick={() => window.dispatchEvent(new Event("adn:palette"))}>
-      Search tools <kbd>⌘K</kbd>
+      <span className="lbl">Search tools</span><kbd>⌘K</kbd>
     </button>
   );
 }
