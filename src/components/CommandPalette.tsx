@@ -3,12 +3,9 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { GITHUB_URL } from "@/config";
-import { categories, getTool, searchTools, tools, type Category } from "@/tools/registry";
+import { categories, categoryIcons, getTool, searchTools, tools, type Category } from "@/tools/registry";
 
-const ICONS: Record<Category, string> = {
-  Text: "Aa", Generators: "✦", "Crypto & Security": "#", Encoding: "%", "Data & Code": "{}",
-  "Color & Design": "◐", Image: "▣", "Video & Audio": "▶", "Time & Date": "◷", "Web & Network": "@", "Math & Units": "±",
-};
+const ICONS = categoryIcons;
 
 const RECENT_KEY = "devdrawer:recent";
 

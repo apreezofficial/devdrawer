@@ -110,6 +110,13 @@ export const tools: ToolMeta[] = [
 
 export const categories = Array.from(new Set(tools.map((x) => x.category)));
 
+export const categoryIcons: Record<Category, string> = {
+  Text: "Aa", Generators: "✦", "Crypto & Security": "#", Encoding: "%", "Data & Code": "{}",
+  "Color & Design": "◐", Image: "▣", "Video & Audio": "▶", "Time & Date": "◷", "Web & Network": "@", "Math & Units": "±",
+};
+
+export const categoryId = (c: string) => c.toLowerCase().replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "");
+
 export const getTool = (slug: string) => tools.find((x) => x.slug === slug);
 
 export function searchTools(query: string) {

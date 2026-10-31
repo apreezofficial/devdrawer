@@ -303,3 +303,55 @@ a:hover .signature { opacity: .8; }
 .km-spacer { flex: 1; }
 .km-brand { font: 600 12px var(--mono); letter-spacing: -0.02em; }
 @media (max-width: 640px) { .km-backdrop { padding-top: 8vh; } .km-hint { display: none; } }
+
+/* ── Nav ─────────────────────────────────────── */
+.header-inner { transition: max-width .45s cubic-bezier(.2,.9,.25,1), height .3s, box-shadow .3s, padding .3s; }
+.header.scrolled .header-inner { max-width: 920px; height: 56px; box-shadow: 0 12px 40px -16px rgba(0,0,0,.28); }
+/* Logo: drawer mark + wordmark */
+.logo { gap: 9px; }
+.mark { overflow: visible; flex: none; }
+.mark-body { fill: var(--ink); }
+.mark-front { fill: color-mix(in srgb, var(--on-ink) 16%, var(--ink)); }
+.mark-handle { fill: var(--on-ink); opacity: .9; }
+.mark-code { stroke: var(--on-ink); opacity: 0; transform: translateY(2px); transition: opacity .2s .05s, transform .3s cubic-bezier(.2,.9,.25,1); }
+.mark-drawer-top { transition: transform .38s cubic-bezier(.3,1.5,.5,1); }
+.mark-drawer-top .mark-front { stroke: var(--ink); stroke-width: 1; }
+.logo:hover .mark-drawer-top { transform: translateY(-8.5px); }
+.logo:hover .mark-code { opacity: 1; transform: none; }
+.wordmark { font-weight: 750; font-size: 17px; letter-spacing: -0.045em; line-height: 1; }
+.wm-dev { color: var(--muted); font-weight: 600; transition: color .2s; }
+.logo:hover .wm-dev { color: var(--text); }
+@media (prefers-reduced-motion: reduce) { .mark-drawer-top, .mark-code { transition: none; } }
+
+.nav-links { position: relative; display: flex; align-items: center; gap: 2px; margin-left: 18px; }
+.nav-links > a, .nav-menu > button { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 6px; height: 38px; padding: 0 14px; border-radius: 99px; font: inherit; font-size: 14px; font-weight: 500; color: var(--muted); background: none; border: 0; cursor: pointer; transition: color .15s; }
+.nav-links > a:hover, .nav-menu > button:hover, .nav-menu > button[aria-expanded="true"] { color: var(--text); }
+.nav-pill { position: absolute; left: 0; top: 50%; height: 38px; margin-top: -19px; border-radius: 99px; background: var(--faint); transition: transform .25s cubic-bezier(.2,.9,.25,1), width .25s cubic-bezier(.2,.9,.25,1); pointer-events: none; }
+.nav-count { font: 600 10.5px/1 var(--mono); padding: 3px 6px; border-radius: 99px; background: var(--ink); color: var(--on-ink); }
+.chev { display: inline-block; transition: transform .2s; transform: translateY(-3px); font-size: 13px; }
+.chev.open { transform: translateY(2px) rotate(180deg); }
+
+.nav-menu { position: relative; }
+.mega { position: absolute; top: calc(100% + 14px); left: 50%; transform: translateX(-50%); width: 520px; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; padding: 8px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 18px; box-shadow: 0 30px 70px -20px rgba(0,0,0,.35); animation: km-in .2s cubic-bezier(.2,.9,.25,1); }
+.mega-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; font-size: 14px; font-weight: 500; color: color-mix(in srgb, var(--text) 85%, transparent); transition: background .12s; }
+.mega-item:hover { background: var(--faint); color: var(--text); }
+.mega-item:hover .km-icon { color: var(--text); border-color: var(--ink); }
+.mega-count { margin-left: auto; font: 500 12px var(--mono); color: var(--muted); }
+
+.search-pill { display: flex; align-items: center; gap: 10px; height: 44px; min-width: 220px; padding: 0 8px 0 16px; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font: inherit; font-size: 14px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+.search-pill:hover { border-color: color-mix(in srgb, var(--ink) 30%, transparent); box-shadow: 0 0 0 4px var(--faint); }
+.search-pill .typed { flex: 1; text-align: left; white-space: nowrap; }
+.search-pill .typed b { color: var(--text); font-weight: 600; font-family: var(--mono); font-size: 13px; }
+.caret { display: inline-block; width: 1.5px; height: 14px; margin-left: 2px; vertical-align: -2px; background: var(--text); animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.nav-gh svg { flex: none; }
+.section { scroll-margin-top: 110px; }
+
+@media (max-width: 900px) { .nav-links { display: none; } }
+@media (max-width: 640px) {
+  .search-pill { min-width: 0; width: 44px; padding: 0; justify-content: center; }
+  .search-pill .typed, .search-pill kbd { display: none; }
+  .nav-gh { width: 44px; padding: 0; }
+  .nav-gh .lbl { display: none; }
+}

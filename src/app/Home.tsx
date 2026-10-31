@@ -7,7 +7,7 @@ import { GlyphField } from "@/components/GlyphField";
 import { GITHUB_URL } from "@/config";
 import { detect } from "@/tools/detect";
 import { categoryTint, previews } from "@/tools/previews";
-import { categories, searchTools, tools, type ToolMeta } from "@/tools/registry";
+import { categories, categoryId, searchTools, tools, type ToolMeta } from "@/tools/registry";
 
 const SUBTITLES: Record<string, string> = {
   Text: "Count it, case it, diff it, clean it.",
@@ -132,7 +132,7 @@ export function Home() {
         categories
           .filter((c) => !cat || c === cat)
           .map((c) => (
-            <section key={c} className="section">
+            <section key={c} id={categoryId(c)} className="section">
               <div className="section-head">
                 <h2>{c}</h2>
                 <p>{SUBTITLES[c]}</p>
