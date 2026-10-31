@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
+import { GlyphField } from "@/components/GlyphField";
 import { GITHUB_URL } from "@/config";
 import { detect } from "@/tools/detect";
 import { categoryTint, previews } from "@/tools/previews";
@@ -57,6 +58,8 @@ export function Home() {
 
   return (
     <>
+      <div className="hero-wrap">
+        <GlyphField />
       <section className="hero">
         <div className="eyebrow"><span className="eyebrow-dot" />{ready} tools live{tools.length > ready ? ` · ${tools.length - ready} in the works` : " · all free"}</div>
         <h1>Every tool a developer<br /><span className="dim">ends up Googling.</span></h1>
@@ -111,6 +114,7 @@ export function Home() {
           )}
         </div>
       </section>
+      </div>
 
       <div className="toolbar" id="tools">
         <input type="search" placeholder="Filter tools…" value={query} onChange={(e) => setQuery(e.target.value)} />
@@ -138,15 +142,8 @@ export function Home() {
           ))
       )}
       {!visible.length && <p className="field-hint" style={{ textAlign: "center", marginTop: 32 }}>No match. Request it on GitHub and someone might build it this week.</p>}
+      <div style={{ height: 96 }} />
 
-      <section className="contribute">
-        <h2>Missing a tool?<br />Build it in five minutes.</h2>
-        <p>Open an issue with your idea, or build it yourself: one file and one registry line, and your tool ships to every developer who visits.</p>
-        <div className="cta-row">
-          <a className="btn btn-lg" href={`${GITHUB_URL}/blob/main/CONTRIBUTING.md`} target="_blank" rel="noreferrer">Read the guide</a>
-          <a className="btn btn-lg btn-ghost" href={`${GITHUB_URL}/issues/new?title=Tool+request:+`} target="_blank" rel="noreferrer">Request a tool</a>
-        </div>
-      </section>
     </>
   );
 }
