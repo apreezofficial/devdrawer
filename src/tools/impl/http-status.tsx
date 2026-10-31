@@ -1,6 +1,8 @@
 "use client";
 
-import { useSeed } from "@/components/ui";
+import { useToolInput } from "@/components/useToolInput";
+import { useState } from "react";
+
 
 const CODES: [number, string, string][] = [
   [100, "Continue", "Keep sending the request body."],
@@ -43,7 +45,10 @@ const CODES: [number, string, string][] = [
 const tone = (c: number) => (c < 300 ? "var(--ok)" : c < 400 ? "var(--accent)" : c < 500 ? "orange" : "var(--danger)");
 
 export default function HttpStatus() {
-  const [q, setQ] = useSeed("");
+  const [q, setQ] = useState("");
+  useToolInput("http-status", (settings) => {
+    if (settings.q !== undefined) setQ(settings.q as typeof q);
+  });
   const s = q.trim().toLowerCase();
   const list = CODES.filter(([c, n, d]) => !s || String(c).startsWith(s) || n.toLowerCase().includes(s) || d.toLowerCase().includes(s));
   return (

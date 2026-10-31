@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 
 export function CopyButton({ value, label = "Copy" }: { value: string; label?: string }) {
   const [done, setDone] = useState(false);
@@ -56,19 +56,6 @@ export function Stat({ label, value }: { label: string; value: ReactNode }) {
 
 export function ErrorText({ children }: { children: ReactNode }) {
   return children ? <p className="error">{children}</p> : null;
-}
-
-/** Initial input handed over from smart paste (read once, then cleared). */
-export function useSeed(fallback = ""): [string, (v: string) => void] {
-  const [value, setValue] = useState(fallback);
-  useEffect(() => {
-    try {
-      const q = sessionStorage.getItem("devdrawer:seed");
-      sessionStorage.removeItem("devdrawer:seed");
-      if (q) setValue(q);
-    } catch { /* storage blocked */ }
-  }, []);
-  return [value, setValue];
 }
 
 export function FileDrop({ accept, onFile, label }: { accept: string; onFile: (f: File) => void; label: string }) {

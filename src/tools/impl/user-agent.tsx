@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
-import { useSeed } from "@/components/ui";
+import { useToolInput } from "@/components/useToolInput";
+import { useState } from "react";
+
 
 function parse(ua: string) {
   const find = (rules: [RegExp, string][]) => {
@@ -26,8 +27,10 @@ function parse(ua: string) {
 }
 
 export default function UserAgent() {
-  const [ua, setUa] = useSeed("");
-  useEffect(() => { if (!ua) setUa(navigator.userAgent); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  const [ua, setUa] = useState(() => navigator.userAgent);
+  useToolInput("user-agent", (settings) => {
+    if (settings.ua !== undefined) setUa(settings.ua as typeof ua);
+  });
   return (
     <>
       <textarea rows={3} value={ua} onChange={(e) => setUa(e.target.value)} />

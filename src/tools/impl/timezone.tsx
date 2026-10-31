@@ -1,10 +1,11 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useMemo, useState } from "react";
 import { Field, Row } from "@/components/ui";
 
 const ZONES: string[] =
-  typeof Intl.supportedValuesOf === "function" ? Intl.supportedValuesOf("timeZone") : ["UTC", "Europe/London", "America/New_York", "Asia/Tokyo"];
+  typeof Intl.supportedValuesOf === "function" ? ["UTC", ...Intl.supportedValuesOf("timeZone")] : ["UTC", "Europe/London", "America/New_York", "Asia/Tokyo"];
 const DEFAULTS = ["UTC", "America/Los_Angeles", "America/New_York", "Europe/London", "Africa/Lagos", "Asia/Kolkata", "Asia/Tokyo"];
 
 /** Offset of `zone` from UTC, in minutes, at instant `d`. */
@@ -36,6 +37,11 @@ export default function TimezoneTool() {
   const [from, setFrom] = useState(here);
   const [zones, setZones] = useState<string[]>(() => [...new Set([here, ...DEFAULTS])]);
   const [add, setAdd] = useState("");
+  useToolInput("timezone", (settings) => {
+    if (settings.when !== undefined) setWhen(settings.when as typeof when);
+    if (settings.from !== undefined) setFrom(settings.from as typeof from);
+    if (settings.zones !== undefined) setZones(settings.zones as typeof zones);
+  });
 
   const instant = useMemo(() => (when ? zonedToInstant(when, from) : new Date()), [when, from]);
 

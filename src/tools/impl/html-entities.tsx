@@ -1,7 +1,8 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useState } from "react";
-import { Output, Row, useSeed } from "@/components/ui";
+import { Output, Row } from "@/components/ui";
 
 const BASIC: Record<string, string> = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
 
@@ -15,9 +16,14 @@ const decode = (s: string) => {
 };
 
 export default function HtmlEntities() {
-  const [input, setInput] = useSeed('<a href="/">Café & “quotes”</a>');
+  const [input, setInput] = useState('<a href="/">Café & “quotes”</a>');
   const [mode, setMode] = useState<"encode" | "decode">("encode");
   const [all, setAll] = useState(false);
+  useToolInput("html-entities", (settings) => {
+    if (settings.input !== undefined) setInput(settings.input as typeof input);
+    if (settings.mode !== undefined) setMode(settings.mode as typeof mode);
+    if (settings.all !== undefined) setAll(settings.all as typeof all);
+  });
   const out = mode === "encode" ? encode(input, all) : decode(input);
   return (
     <>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useEffect, useState } from "react";
 import { Field, Output, Row } from "@/components/ui";
 
@@ -9,6 +10,11 @@ export default function HmacTool() {
   const [algo, setAlgo] = useState("SHA-256");
   const [enc, setEnc] = useState<"hex" | "base64">("hex");
   const [out, setOut] = useState("");
+  useToolInput("hmac", (settings) => {
+    if (settings.msg !== undefined) setMsg(settings.msg as typeof msg);
+    if (settings.algo !== undefined) setAlgo(settings.algo as typeof algo);
+    if (settings.enc !== undefined) setEnc(settings.enc as typeof enc);
+  });
 
   useEffect(() => {
     let alive = true;

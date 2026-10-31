@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Field, Row, Stat } from "@/components/ui";
-
+import { useToolInput } from "@/components/useToolInput";
 const gcd = (a: number, b: number): number => (b ? gcd(b, a % b) : a);
 const PRESETS: [string, number, number][] = [
   ["16:9", 1920, 1080], ["4:3", 1024, 768], ["1:1", 1080, 1080], ["21:9", 2560, 1080],
@@ -14,6 +14,20 @@ export default function AspectRatio() {
   const [h, setH] = useState(1080);
   const [newW, setNewW] = useState(1280);
   const [newH, setNewH] = useState(720);
+  useToolInput("aspect-ratio", (settings) => {
+    const width = typeof settings.w === "number" ? settings.w : w;
+    const height = typeof settings.h === "number" ? settings.h : h;
+    setW(width);
+    setH(height);
+    if (typeof settings.newH === "number" && settings.newW === undefined) {
+      setNewH(settings.newH);
+      setNewW(Math.round(settings.newH * width / height));
+    } else {
+      const target = typeof settings.newW === "number" ? settings.newW : newW;
+      setNewW(target);
+      setNewH(Math.round(target * height / width));
+    }
+  });
   const g = w && h ? gcd(Math.round(w), Math.round(h)) : 1;
   const ratio = h ? w / h : 0;
 

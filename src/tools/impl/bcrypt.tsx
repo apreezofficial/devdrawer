@@ -1,5 +1,6 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import bcrypt from "bcryptjs";
 import { useState } from "react";
 import { Field, Output, Row } from "@/components/ui";
@@ -15,6 +16,9 @@ export default function BcryptTool() {
   const [checkHash, setCheckHash] = useState("");
   const [result, setResult] = useState<boolean | null>(null);
   const [checkErr, setCheckErr] = useState("");
+  useToolInput("bcrypt", (settings) => {
+    if (settings.rounds !== undefined) setRounds(settings.rounds as typeof rounds);
+  });
 
   const run = async () => {
     setBusy(true);

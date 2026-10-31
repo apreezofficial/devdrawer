@@ -1,5 +1,6 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useMemo, useState } from "react";
 import { Field, Stat } from "@/components/ui";
 
@@ -27,6 +28,10 @@ function diffLines(a: string[], b: string[]): Op[] {
 export default function TextDiff() {
   const [a, setA] = useState("The quick brown fox\njumps over\nthe lazy dog");
   const [b, setB] = useState("The quick brown fox\nleaps over\nthe lazy dog\nand runs away");
+  useToolInput("text-diff", (settings) => {
+    if (settings.a !== undefined) setA(settings.a as typeof a);
+    if (settings.b !== undefined) setB(settings.b as typeof b);
+  });
   const ops = useMemo(() => diffLines(a.split("\n"), b.split("\n")), [a, b]);
   const added = ops.filter((o) => o.kind === "add").length;
   const removed = ops.filter((o) => o.kind === "del").length;

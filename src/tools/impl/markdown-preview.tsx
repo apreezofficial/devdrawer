@@ -1,5 +1,6 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useMemo, useState } from "react";
 import { Output } from "@/components/ui";
 import { renderMarkdown } from "@/lib/markdown";
@@ -24,6 +25,9 @@ console.log("hi");
 
 export default function MarkdownPreview() {
   const [md, setMd] = useState(SAMPLE);
+  useToolInput("markdown-preview", (settings) => {
+    if (settings.md !== undefined) setMd(settings.md as typeof md);
+  });
   const html = useMemo(() => renderMarkdown(md), [md]);
   return (
     <>

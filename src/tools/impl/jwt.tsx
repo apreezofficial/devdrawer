@@ -1,6 +1,9 @@
 "use client";
 
-import { ErrorText, Output, useSeed } from "@/components/ui";
+import { useToolInput } from "@/components/useToolInput";
+import { useState } from "react";
+
+import { ErrorText, Output } from "@/components/ui";
 import { b64ToUtf8 } from "./base64";
 
 const SAMPLE =
@@ -12,7 +15,10 @@ function decodePart(part: string) {
 }
 
 export default function JwtTool() {
-  const [token, setToken] = useSeed(SAMPLE);
+  const [token, setToken] = useState(SAMPLE);
+  useToolInput("jwt", (settings) => {
+    if (settings.token !== undefined) setToken(settings.token as typeof token);
+  });
   let header = "", payload = "", error = "", claims: Record<string, unknown> = {};
   try {
     const [h, p] = token.trim().split(".");

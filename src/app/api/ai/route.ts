@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { tools } from "@/tools/registry";
-import { FAKE_DATA_FIELDS, parseFakeDataConfig } from "@/lib/fake-data-config";
+import { TOOL_INPUT_GUIDE } from "@/lib/tool-input";
+import { parseAIResponse } from "@/lib/ai-response";
 
 export const runtime = "nodejs";
 
@@ -46,13 +47,20 @@ Available tools (slug: name. description):
 ${TOOL_LIST}
 
 Always reply with a single JSON object, no prose around it:
-{"reply": string, "tool"?: string, "input"?: string}
+{"reply": string, "tool"?: string, "settings"?: object}
 - "reply": your answer in concise Markdown. Use fenced code blocks for code. Keep it short and practical.
-- "tool": include ONLY when one of the tools above would help the user right now; must be an exact slug from the list.
-- "input": optional text to pre-fill that tool with (e.g. the regex, cron expression, SQL, JSON, curl command, or text to process).
-For fake-data, input MUST be a JSON-encoded configuration string with fields, count, format (json/csv/sql), and optional seed. Supported fields: ${FAKE_DATA_FIELDS.join(", ")}.
-Example request "50 fake users with email and city as CSV": {"reply":"Open the generator to create 50 fake users with email and city as CSV.","tool":"fake-data","input":"{\\"fields\\":[\\"email\\",\\"city\\"],\\"count\\":50,\\"format\\":\\"csv\\"}"}.
-Use exactly the fields requested; map "name" to fullName. If no fields are specified use id, fullName, email, city, createdAt. Default to 10 rows and json unless requested otherwise. Generate fake data locally through this configuration rather than writing rows into input or reply. Never claim you have provided data or a file unless it is actually in reply; describe what opening the generator will do.
+- "tool": include ONLY when a tool above helps right now; use an exact slug.
+- "settings": editable tool settings matching the contracts below. Include only settings the user requested, with exact property names, enum values and types. Never put generated output in settings.
+The Open button applies settings and tools with live results update automatically. Tools with a Generate/Hash/Convert button require the user to click it. File tools require a local file upload. Never claim to have created a file, completed a conversion, or provided data unless it is actually in reply. Say what opening the tool will configure.
+Examples:
+{"reply":"Open the generator for 50 users with email and city as CSV.","tool":"fake-data","settings":{"fields":["email","city"],"count":50,"format":"csv"}}
+{"reply":"Open the decoder with this Base64 text.","tool":"base64","settings":{"input":"SGVsbG8=","mode":"decode"}}
+{"reply":"Test this expression against your sample.","tool":"regex","settings":{"pattern":"^hello$","flags":"im","text":"HELLO"}}
+For fake-data map "name" to fullName; when unspecified use id, fullName, email, city, createdAt, 10 rows and json. When fields are specified use exactly those fields.
+For regex supply the pattern without / delimiters and flags separately. For number-base supply input as a string plus numeric radix. For unit-converter supply the group and a matching from unit; results show all target units. Percentage a and b populate all five calculation forms. For aspect-ratio, supply w, h, newW and newH consistent with the requested ratio.
+Never put passwords, HMAC secrets, Wi-Fi passwords, private keys or other credentials in settings; users enter these locally. Do not claim file tools can process a remote URL. If no settings apply, omit settings and simply link the tool with a helpful next step.
+Tool setting contracts (JSON schema properties; numeric bounds apply):
+${TOOL_INPUT_GUIDE}
 Never ask for or repeat passwords, API keys or other secrets. If the user pastes one, tell them to rotate it.`;
 
 type Msg = { role: "user" | "assistant"; content: string };
@@ -71,7 +79,7 @@ async function callGroq(messages: Msg[]) {
           response_format: { type: "json_object" },
           reasoning_effort: "low",
           temperature: 0.3,
-          max_completion_tokens: 1500,
+          max_completion_tokens: 3000,
         }),
         signal: AbortSignal.timeout(25_000),
       }).catch(() => null);
@@ -90,22 +98,6 @@ async function callGroq(messages: Msg[]) {
   throw Object.assign(new Error("All AI providers failed"), { status: lastStatus });
 }
 
-function parse(content: string) {
-  const json = content.match(/\{[\s\S]*\}/)?.[0];
-  try {
-    const obj = JSON.parse(json ?? content);
-    const slug = typeof obj.tool === "string" && tools.some((t) => t.slug === obj.tool && t.status === "ready") ? obj.tool : undefined;
-    const input = slug && typeof obj.input === "string" ? obj.input.slice(0, 4000) : undefined;
-    const config = slug === "fake-data" && input ? parseFakeDataConfig(input) : null;
-    return {
-      reply: typeof obj.reply === "string" ? obj.reply : "",
-      tool: slug,
-      input: slug === "fake-data" ? (config ? JSON.stringify(config) : undefined) : input,
-    };
-  } catch {
-    return { reply: content, tool: undefined, input: undefined };
-  }
-}
 
 export async function POST(req: Request) {
   if (!KEYS.length) {
@@ -133,7 +125,7 @@ export async function POST(req: Request) {
 
   try {
     const { content } = await callGroq(messages);
-    const out = parse(content);
+    const out = parseAIResponse(content, tools.filter((t) => t.status === "ready").map((t) => t.slug));
     if (!out.reply && !out.tool) throw new Error("empty");
     return NextResponse.json(out);
   } catch (e) {

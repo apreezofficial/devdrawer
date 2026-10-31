@@ -1,17 +1,23 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useEffect, useState } from "react";
-import { CopyButton, FileDrop, formatBytes, useSeed } from "@/components/ui";
+import { CopyButton, FileDrop, formatBytes } from "@/components/ui";
 
 const ALGOS = ["SHA-1", "SHA-256", "SHA-384", "SHA-512"] as const;
 
 const toHex = (buf: ArrayBuffer) => Array.from(new Uint8Array(buf), (b) => b.toString(16).padStart(2, "0")).join("");
 
 export default function HashTool() {
-  const [text, setText] = useSeed("hello world");
+  const [text, setText] = useState("hello world");
   const [file, setFile] = useState<File | null>(null);
   const [upper, setUpper] = useState(false);
   const [hashes, setHashes] = useState<Record<string, string>>({});
+  useToolInput("hash", (settings) => {
+    if (settings.text !== undefined) setText(settings.text as typeof text);
+    if (settings.upper !== undefined) setUpper(settings.upper as typeof upper);
+    if (settings.text !== undefined) setFile(null);
+  });
 
   useEffect(() => {
     let alive = true;

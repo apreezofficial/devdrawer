@@ -1,5 +1,6 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useEffect, useState } from "react";
 import { Field, FileDrop, formatBytes, Row, Stat } from "@/components/ui";
 
@@ -10,6 +11,11 @@ export default function ImageCompressor() {
   const [format, setFormat] = useState("image/webp");
   const [maxW, setMaxW] = useState(1920);
   const [result, setResult] = useState<{ url: string; size: number; w: number; h: number } | null>(null);
+  useToolInput("image-compressor", (settings) => {
+    if (settings.quality !== undefined) setQuality(settings.quality as typeof quality);
+    if (settings.format !== undefined) setFormat(settings.format as typeof format);
+    if (settings.maxW !== undefined) setMaxW(settings.maxW as typeof maxW);
+  });
 
   useEffect(() => {
     if (!file) return;

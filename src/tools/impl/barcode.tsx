@@ -1,5 +1,6 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import JsBarcode from "jsbarcode";
 import { useEffect, useRef, useState } from "react";
 import { ErrorText, Field, Row } from "@/components/ui";
@@ -19,6 +20,12 @@ export default function BarcodeTool() {
   const [showText, setShowText] = useState(true);
   const [height, setHeight] = useState(100);
   const [error, setError] = useState("");
+  useToolInput("barcode", (settings) => {
+    if (settings.value !== undefined) setValue(settings.value as typeof value);
+    if (settings.format !== undefined) setFormat(settings.format as typeof format);
+    if (settings.showText !== undefined) setShowText(settings.showText as typeof showText);
+    if (settings.height !== undefined) setHeight(settings.height as typeof height);
+  });
   const svgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {

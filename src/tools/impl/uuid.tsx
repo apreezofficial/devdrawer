@@ -1,5 +1,6 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useCallback, useEffect, useState } from "react";
 import { Field, Output, Row } from "@/components/ui";
 
@@ -31,6 +32,12 @@ export default function UuidTool() {
   const [upper, setUpper] = useState(false);
   const [noDash, setNoDash] = useState(false);
   const [out, setOut] = useState("");
+  useToolInput("uuid", (settings) => {
+    if (settings.kind !== undefined) setKind(settings.kind as typeof kind);
+    if (settings.count !== undefined) setCount(settings.count as typeof count);
+    if (settings.upper !== undefined) setUpper(settings.upper as typeof upper);
+    if (settings.noDash !== undefined) setNoDash(settings.noDash as typeof noDash);
+  });
 
   const run = useCallback(() => {
     const list = Array.from({ length: count }, () => {

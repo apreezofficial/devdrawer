@@ -1,6 +1,9 @@
 "use client";
 
-import { CopyButton, ErrorText, Field, Row, useSeed } from "@/components/ui";
+import { useToolInput } from "@/components/useToolInput";
+import { useState } from "react";
+
+import { CopyButton, ErrorText, Field, Row } from "@/components/ui";
 import { hslToRgb, luminance, parseColor, rgbToHsl, toHex, type RGB } from "@/lib/color";
 
 declare global {
@@ -8,7 +11,10 @@ declare global {
 }
 
 export default function ColorPicker() {
-  const [input, setInput] = useSeed("#4f46e5");
+  const [input, setInput] = useState("#4f46e5");
+  useToolInput("color-picker", (settings) => {
+    if (settings.input !== undefined) setInput(settings.input as typeof input);
+  });
   const rgb = parseColor(input);
   const hex = rgb ? toHex(rgb) : "#000000";
   const hsl = rgb ? rgbToHsl(rgb) : { h: 0, s: 0, l: 0 };

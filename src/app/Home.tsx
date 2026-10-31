@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { GlyphField } from "@/components/GlyphField";
+import { handoffToolInput } from "@/components/useToolInput";
+import { encodeToolInput } from "@/lib/tool-input";
 import { GITHUB_URL } from "@/config";
 import { detect } from "@/tools/detect";
 import { categoryTint, previews } from "@/tools/previews";
@@ -52,7 +54,8 @@ export function Home() {
 
   const open = (slug: string) => {
     // Hand the input over via sessionStorage, never the URL, so tokens stay out of history.
-    try { sessionStorage.setItem("devdrawer:seed", paste.trim()); } catch { /* storage blocked */ }
+    const input = slug === "base64" ? encodeToolInput(slug, { input: paste.trim(), mode: "decode" }) : paste.trim();
+    handoffToolInput(slug, input);
     router.push(`/tools/${slug}`);
   };
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import QRCode from "qrcode";
 import { useEffect, useState } from "react";
 import { ErrorText, Field, Row } from "@/components/ui";
@@ -19,6 +20,16 @@ export default function QrCodeTool() {
   const [svg, setSvg] = useState("");
   const [png, setPng] = useState("");
   const [error, setError] = useState("");
+  useToolInput("qr-code", (settings) => {
+    if (settings.mode !== undefined) setMode(settings.mode as typeof mode);
+    if (settings.text !== undefined) setText(settings.text as typeof text);
+    if (settings.ssid !== undefined) setSsid(settings.ssid as typeof ssid);
+    if (settings.sec !== undefined) setSec(settings.sec as typeof sec);
+    if (settings.email !== undefined) setEmail(settings.email as typeof email);
+    if (settings.fg !== undefined) setFg(settings.fg as typeof fg);
+    if (settings.bg !== undefined) setBg(settings.bg as typeof bg);
+    if (settings.ecl !== undefined) setEcl(settings.ecl as typeof ecl);
+  });
 
   const wifiEsc = (s: string) => s.replace(/([\\;,:"])/g, "\\$1");
   const payload =

@@ -1,5 +1,6 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useEffect, useState } from "react";
 import { Field, FileDrop, formatBytes, Row, Stat } from "@/components/ui";
 
@@ -11,6 +12,11 @@ export default function ImageConverter() {
   const [quality, setQuality] = useState(0.9);
   const [bg, setBg] = useState("#ffffff");
   const [out, setOut] = useState<{ url: string; size: number } | null>(null);
+  useToolInput("image-converter", (settings) => {
+    if (settings.format !== undefined) setFormat(settings.format as typeof format);
+    if (settings.quality !== undefined) setQuality(settings.quality as typeof quality);
+    if (settings.bg !== undefined) setBg(settings.bg as typeof bg);
+  });
 
   useEffect(() => {
     if (!file) return;

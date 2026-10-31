@@ -1,5 +1,6 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useState } from "react";
 import { Field, Output, Row } from "@/components/ui";
 
@@ -14,6 +15,9 @@ export default function MetaTags() {
     site: "devdrawer",
     twitter: "",
     theme: "#171717",
+  });
+  useToolInput("meta-tags", (settings) => {
+    if (settings.m !== undefined) setM((current) => ({ ...current, ...settings.m as typeof m }));
   });
   const set = (k: keyof typeof m) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setM({ ...m, [k]: e.target.value });
 

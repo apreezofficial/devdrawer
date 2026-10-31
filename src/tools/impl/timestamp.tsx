@@ -1,7 +1,8 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useEffect, useState } from "react";
-import { CopyButton, ErrorText, Field, useSeed } from "@/components/ui";
+import { CopyButton, ErrorText, Field } from "@/components/ui";
 
 function relative(ms: number) {
   const diff = ms - Date.now();
@@ -13,15 +14,23 @@ function relative(ms: number) {
 
 export default function Timestamp() {
   const [now, setNow] = useState(() => Date.now());
-  const [input, setInput] = useSeed("");
+  const [input, setInput] = useState("");
   const [dateInput, setDateInput] = useState("");
+  useToolInput("timestamp", (settings) => {
+    if (settings.input !== undefined) setInput(settings.input as typeof input);
+    if (typeof settings.dateInput === "string") {
+      setDateInput(settings.dateInput);
+      const ms = new Date(settings.dateInput).getTime();
+      if (Number.isFinite(ms)) setInput(String(Math.floor(ms / 1000)));
+    }
+  });
 
   useEffect(() => { const id = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(id); }, []);
 
   const raw = input.trim();
   const n = Number(raw);
-  const ms = raw ? (/^\d+$/.test(raw) ? (raw.length > 11 ? n : n * 1000) : Date.parse(raw)) : NaN;
-  const valid = !Number.isNaN(ms);
+  const ms = raw ? (/^-?\d+$/.test(raw) ? (raw.replace("-", "").length > 11 ? n : n * 1000) : Date.parse(raw)) : NaN;
+  const valid = Number.isFinite(ms) && !Number.isNaN(new Date(ms).getTime());
   const d = new Date(ms);
 
   const rows: [string, string][] = valid ? [

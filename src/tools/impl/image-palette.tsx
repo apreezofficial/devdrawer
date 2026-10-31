@@ -1,5 +1,6 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useState } from "react";
 import { CopyButton, Field, FileDrop } from "@/components/ui";
 import { toHex, type RGB } from "@/lib/color";
@@ -36,6 +37,10 @@ export default function ImagePalette() {
   const [src, setSrc] = useState("");
   const [count, setCount] = useState(8);
   const [colors, setColors] = useState<RGB[]>([]);
+  useToolInput("image-palette", (settings) => {
+    if (settings.count !== undefined) setCount(settings.count as typeof count);
+    if (src && settings.count !== undefined) load(src, settings.count as number);
+  });
 
   const load = (url: string, n = count) => {
     const img = new Image();

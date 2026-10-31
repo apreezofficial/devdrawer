@@ -1,5 +1,6 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useState } from "react";
 import { Field, Row, Stat } from "@/components/ui";
 import { contrastRatio, parseColor, toHex } from "@/lib/color";
@@ -7,6 +8,10 @@ import { contrastRatio, parseColor, toHex } from "@/lib/color";
 export default function Contrast() {
   const [fg, setFg] = useState("#1c1b19");
   const [bg, setBg] = useState("#fafaf9");
+  useToolInput("contrast", (settings) => {
+    if (settings.fg !== undefined) setFg(settings.fg as typeof fg);
+    if (settings.bg !== undefined) setBg(settings.bg as typeof bg);
+  });
   const f = parseColor(fg), b = parseColor(bg);
   const ratio = f && b ? contrastRatio(f, b) : 0;
   const pass = (n: number) => (ratio >= n ? <span className="ok">Pass</span> : <span className="error">Fail</span>);

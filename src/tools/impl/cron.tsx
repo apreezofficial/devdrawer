@@ -1,6 +1,9 @@
 "use client";
 
-import { ErrorText, useSeed } from "@/components/ui";
+import { useToolInput } from "@/components/useToolInput";
+import { useState } from "react";
+
+import { ErrorText } from "@/components/ui";
 
 const FIELDS = [
   { name: "minute", min: 0, max: 59 },
@@ -94,7 +97,10 @@ function nextRuns(p: Parsed, count: number) {
 const EXAMPLES = ["*/5 * * * *", "0 9 * * 1-5", "30 2 1 * *", "0 0 * * 0", "15 14 1,15 * *", "@hourly"];
 
 export default function CronTool() {
-  const [expr, setExpr] = useSeed("0 9 * * 1-5");
+  const [expr, setExpr] = useState("0 9 * * 1-5");
+  useToolInput("cron", (settings) => {
+    if (settings.expr !== undefined) setExpr(settings.expr as typeof expr);
+  });
   let parsed: Parsed | null = null, error = "";
   try { parsed = parse(expr); } catch (e) { error = (e as Error).message; }
 

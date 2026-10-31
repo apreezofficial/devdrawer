@@ -1,16 +1,24 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useState } from "react";
-import { ErrorText, Field, Output, Row, useSeed } from "@/components/ui";
+import { ErrorText, Field, Output, Row } from "@/components/ui";
 
 const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 export default function FindReplace() {
-  const [text, setText] = useSeed("Hello world. The world is big.");
+  const [text, setText] = useState("Hello world. The world is big.");
   const [find, setFind] = useState("world");
   const [repl, setRepl] = useState("planet");
   const [regex, setRegex] = useState(false);
   const [ci, setCi] = useState(false);
+  useToolInput("find-replace", (settings) => {
+    if (settings.text !== undefined) setText(settings.text as typeof text);
+    if (settings.find !== undefined) setFind(settings.find as typeof find);
+    if (settings.repl !== undefined) setRepl(settings.repl as typeof repl);
+    if (settings.regex !== undefined) setRegex(settings.regex as typeof regex);
+    if (settings.ci !== undefined) setCi(settings.ci as typeof ci);
+  });
 
   let out = text, count = 0, error = "";
   if (find) {

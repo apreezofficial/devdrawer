@@ -1,5 +1,6 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useEffect, useState } from "react";
 import { Field, FileDrop, Output, Row } from "@/components/ui";
 
@@ -39,6 +40,12 @@ export default function FaviconTool() {
   const [transparent, setTransparent] = useState(true);
   const [icons, setIcons] = useState<{ size: number; name: string; url: string; blob: Blob }[]>([]);
   const [ico, setIco] = useState("");
+  useToolInput("favicon", (settings) => {
+    if (settings.radius !== undefined) setRadius(settings.radius as typeof radius);
+    if (settings.padding !== undefined) setPadding(settings.padding as typeof padding);
+    if (settings.bg !== undefined) setBg(settings.bg as typeof bg);
+    if (settings.transparent !== undefined) setTransparent(settings.transparent as typeof transparent);
+  });
 
   useEffect(() => {
     if (!file) return;

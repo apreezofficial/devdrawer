@@ -1,7 +1,8 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useState } from "react";
-import { Field, Output, Row, useSeed } from "@/components/ui";
+import { Field, Output, Row } from "@/components/ui";
 
 export function slugify(s: string, sep = "-", lower = true) {
   const out = s
@@ -13,9 +14,14 @@ export function slugify(s: string, sep = "-", lower = true) {
 }
 
 export default function Slugify() {
-  const [text, setText] = useSeed("Héllo Wörld! 10 Tips & Tricks for Next.js");
+  const [text, setText] = useState("Héllo Wörld! 10 Tips & Tricks for Next.js");
   const [sep, setSep] = useState("-");
   const [lower, setLower] = useState(true);
+  useToolInput("slugify", (settings) => {
+    if (settings.text !== undefined) setText(settings.text as typeof text);
+    if (settings.sep !== undefined) setSep(settings.sep as typeof sep);
+    if (settings.lower !== undefined) setLower(settings.lower as typeof lower);
+  });
   return (
     <>
       <Field label="Text"><input value={text} onChange={(e) => setText(e.target.value)} /></Field>

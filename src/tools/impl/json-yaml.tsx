@@ -1,5 +1,6 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useState } from "react";
 import YAML from "yaml";
 import { ErrorText, Field, Output, Row } from "@/components/ui";
@@ -10,6 +11,11 @@ export default function JsonYaml() {
   const [mode, setMode] = useState<"j2y" | "y2j">("j2y");
   const [input, setInput] = useState(SAMPLE);
   const [indent, setIndent] = useState(2);
+  useToolInput("json-yaml", (settings) => {
+    if (settings.input !== undefined) setInput(settings.input as typeof input);
+    if (settings.mode !== undefined) setMode(settings.mode as typeof mode);
+    if (settings.indent !== undefined) setIndent(settings.indent as typeof indent);
+  });
 
   let out = "", error = "";
   try {

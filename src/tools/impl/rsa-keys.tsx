@@ -1,5 +1,6 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useState } from "react";
 import { ErrorText, Field, Output, Row } from "@/components/ui";
 
@@ -22,6 +23,10 @@ export default function RsaKeys() {
   const [keys, setKeys] = useState<{ pub: string; priv: string; jwk: string } | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  useToolInput("rsa-keys", (settings) => {
+    if (settings.bits !== undefined) setBits(settings.bits as typeof bits);
+    if (settings.algo !== undefined) setAlgo(settings.algo as typeof algo);
+  });
 
   const generate = async () => {
     setBusy(true);

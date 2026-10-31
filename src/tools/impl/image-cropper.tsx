@@ -1,5 +1,6 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useRef, useState, type PointerEvent } from "react";
 import { Field, FileDrop, Row } from "@/components/ui";
 
@@ -13,6 +14,9 @@ export default function ImageCropper() {
   const [box, setBox] = useState<Box | null>(null);
   const [ratio, setRatio] = useState("Free");
   const [outUrl, setOutUrl] = useState("");
+  useToolInput("image-cropper", (settings) => {
+    if (settings.ratio !== undefined) setRatio(settings.ratio as typeof ratio);
+  });
   const imgRef = useRef<HTMLImageElement>(null);
   const start = useRef<{ x: number; y: number } | null>(null);
 

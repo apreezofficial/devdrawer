@@ -1,5 +1,6 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useMemo, useState } from "react";
 import { Field, Output, Row } from "@/components/ui";
 
@@ -19,6 +20,11 @@ export default function LoremIpsum() {
   const [unit, setUnit] = useState<"paragraphs" | "sentences" | "words">("paragraphs");
   const [classic, setClassic] = useState(true);
   const [seed, setSeed] = useState(0);
+  useToolInput("lorem-ipsum", (settings) => {
+    if (settings.count !== undefined) setCount(settings.count as typeof count);
+    if (settings.unit !== undefined) setUnit(settings.unit as typeof unit);
+    if (settings.classic !== undefined) setClassic(settings.classic as typeof classic);
+  });
 
   const text = useMemo(() => {
     void seed;

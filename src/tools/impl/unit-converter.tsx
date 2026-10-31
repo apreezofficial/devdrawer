@@ -1,5 +1,6 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useState } from "react";
 import { Field, Row } from "@/components/ui";
 
@@ -27,6 +28,11 @@ export default function UnitConverter() {
   const [group, setGroup] = useState("Length");
   const [value, setValue] = useState(1);
   const [from, setFrom] = useState("km");
+  useToolInput("unit-converter", (settings) => {
+    if (settings.group !== undefined) setGroup(settings.group as typeof group);
+    if (settings.value !== undefined) setValue(settings.value as typeof value);
+    if (settings.from !== undefined) setFrom(settings.from as typeof from);
+  });
   const units = UNITS[group];
   const convert = (to: string) => (group === "Temperature" ? toTemp(value, from, to) : (value * units[from]) / units[to]);
 

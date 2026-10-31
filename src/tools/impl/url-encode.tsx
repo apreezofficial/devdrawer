@@ -1,9 +1,15 @@
 "use client";
 
-import { ErrorText, Output, useSeed } from "@/components/ui";
+import { useToolInput } from "@/components/useToolInput";
+import { useState } from "react";
+
+import { ErrorText, Output } from "@/components/ui";
 
 export default function UrlEncode() {
-  const [input, setInput] = useSeed("https://example.com/search?q=hello world&lang=en#top");
+  const [input, setInput] = useState("https://example.com/search?q=hello world&lang=en#top");
+  useToolInput("url-encode", (settings) => {
+    if (settings.input !== undefined) setInput(settings.input as typeof input);
+  });
   let decoded = "", error = "", parsed: URL | null = null;
   try { decoded = decodeURIComponent(input); } catch { error = "Contains an invalid % escape, so it can't be decoded."; }
   try { parsed = new URL(input); } catch { parsed = null; }

@@ -1,5 +1,6 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useMemo, useState, type ReactNode } from "react";
 import { ErrorText, Field, Row } from "@/components/ui";
 
@@ -16,12 +17,21 @@ export default function RegexTool() {
   const [pattern, setPattern] = useState("[\\w.+-]+@[\\w-]+\\.[\\w.]+");
   const [flags, setFlags] = useState("g");
   const [text, setText] = useState("Contact ada@example.com or linus@kernel.org.\nVisit https://devdrawer.xyz on 2026-10-31.");
+  useToolInput("regex", (settings) => {
+    if (settings.pattern !== undefined) setPattern(settings.pattern as typeof pattern);
+    if (settings.flags !== undefined) setFlags(settings.flags as typeof flags);
+    if (settings.text !== undefined) setText(settings.text as typeof text);
+  });
 
   const { nodes, matches, error } = useMemo(() => {
     if (!pattern) return { nodes: [text], matches: [] as RegExpMatchArray[], error: "" };
     try {
       const re = new RegExp(pattern, flags.includes("g") ? flags : flags + "g");
-      const found = [...text.matchAll(re)].slice(0, 1000);
+      const found: RegExpMatchArray[] = [];
+      for (const match of text.matchAll(re)) {
+        found.push(match);
+        if (found.length === 1000) break;
+      }
       const parts: ReactNode[] = [];
       let last = 0;
       found.forEach((m, i) => {

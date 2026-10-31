@@ -1,5 +1,6 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useState } from "react";
 import { Field, Output, Row } from "@/components/ui";
 
@@ -9,6 +10,11 @@ export default function Gradient() {
   const [type, setType] = useState<"linear" | "radial" | "conic">("linear");
   const [angle, setAngle] = useState(135);
   const [stops, setStops] = useState<Stop[]>([{ color: "#4f46e5", pos: 0 }, { color: "#ec4899", pos: 100 }]);
+  useToolInput("gradient", (settings) => {
+    if (settings.type !== undefined) setType(settings.type as typeof type);
+    if (settings.angle !== undefined) setAngle(settings.angle as typeof angle);
+    if (settings.stops !== undefined) setStops(settings.stops as typeof stops);
+  });
 
   const list = [...stops].sort((a, b) => a.pos - b.pos).map((s) => `${s.color} ${s.pos}%`).join(", ");
   const css =

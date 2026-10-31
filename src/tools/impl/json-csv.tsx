@@ -1,5 +1,6 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useState } from "react";
 import { ErrorText, Field, Output, Row } from "@/components/ui";
 import { parseCsv, toCsv } from "@/lib/csv";
@@ -10,6 +11,11 @@ export default function JsonCsv() {
   const [mode, setMode] = useState<"json2csv" | "csv2json">("json2csv");
   const [input, setInput] = useState(SAMPLE_JSON);
   const [delim, setDelim] = useState(",");
+  useToolInput("json-csv", (settings) => {
+    if (settings.input !== undefined) setInput(settings.input as typeof input);
+    if (settings.mode !== undefined) setMode(settings.mode as typeof mode);
+    if (settings.delim !== undefined) setDelim(settings.delim as typeof delim);
+  });
 
   let out = "", error = "";
   try {

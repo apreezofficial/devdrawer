@@ -1,5 +1,6 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useState } from "react";
 import { Output } from "@/components/ui";
 
@@ -35,6 +36,9 @@ const TEMPLATES: Record<string, string[]> = {
 
 export default function GitignoreTool() {
   const [picked, setPicked] = useState<string[]>(["Node", "Next.js", "macOS", "Env"]);
+  useToolInput("gitignore", (settings) => {
+    if (settings.picked !== undefined) setPicked(settings.picked as typeof picked);
+  });
   const toggle = (k: string) => setPicked((p) => (p.includes(k) ? p.filter((x) => x !== k) : [...p, k]));
   const seen = new Set<string>();
   const out = picked

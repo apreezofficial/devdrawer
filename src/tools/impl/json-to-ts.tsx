@@ -1,7 +1,8 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useState } from "react";
-import { ErrorText, Field, Output, Row, useSeed } from "@/components/ui";
+import { ErrorText, Field, Output, Row } from "@/components/ui";
 
 const pascal = (s: string) => s.replace(/(^|[^A-Za-z0-9]+)([A-Za-z0-9])/g, (_, __, c: string) => c.toUpperCase()).replace(/^[^A-Za-z_]/, "_$&") || "Item";
 const singular = (s: string) => (s.endsWith("ies") ? s.slice(0, -3) + "y" : s.endsWith("s") && s.length > 1 ? s.slice(0, -1) : s + "Item");
@@ -56,10 +57,16 @@ function generate(root: unknown, rootName: string, useType: boolean, optionalNul
 }
 
 export default function JsonToTs() {
-  const [input, setInput] = useSeed('{\n  "id": 1,\n  "name": "Ada",\n  "email": null,\n  "tags": ["admin", "dev"],\n  "address": { "city": "London", "zip": "N1" },\n  "posts": [{ "id": 1, "title": "Hi" }, { "id": 2, "title": "Yo", "draft": true }]\n}');
+  const [input, setInput] = useState('{\n  "id": 1,\n  "name": "Ada",\n  "email": null,\n  "tags": ["admin", "dev"],\n  "address": { "city": "London", "zip": "N1" },\n  "posts": [{ "id": 1, "title": "Hi" }, { "id": 2, "title": "Yo", "draft": true }]\n}');
   const [name, setName] = useState("User");
   const [useType, setUseType] = useState(false);
   const [optNull, setOptNull] = useState(true);
+  useToolInput("json-to-ts", (settings) => {
+    if (settings.input !== undefined) setInput(settings.input as typeof input);
+    if (settings.name !== undefined) setName(settings.name as typeof name);
+    if (settings.useType !== undefined) setUseType(settings.useType as typeof useType);
+    if (settings.optNull !== undefined) setOptNull(settings.optNull as typeof optNull);
+  });
 
   let out = "", error = "";
   try { out = generate(JSON.parse(input), name || "Root", useType, optNull); }

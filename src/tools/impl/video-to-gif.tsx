@@ -1,5 +1,6 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { applyPalette, GIFEncoder, quantize } from "gifenc";
 import { useEffect, useRef, useState } from "react";
 import { Field, FileDrop, formatBytes, Row } from "@/components/ui";
@@ -15,6 +16,10 @@ export default function VideoToGif() {
   const [width, setWidth] = useState(480);
   const [progress, setProgress] = useState<number | null>(null);
   const [out, setOut] = useState<{ url: string; size: number } | null>(null);
+  useToolInput("video-to-gif", (settings) => {
+    if (settings.fps !== undefined) setFps(settings.fps as typeof fps);
+    if (settings.width !== undefined) setWidth(settings.width as typeof width);
+  });
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => () => { if (src) URL.revokeObjectURL(src); }, [src]);

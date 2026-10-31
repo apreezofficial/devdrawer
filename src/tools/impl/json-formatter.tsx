@@ -1,7 +1,8 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useState } from "react";
-import { ErrorText, Field, Output, Row, Stat, useSeed } from "@/components/ui";
+import { ErrorText, Field, Output, Row, Stat } from "@/components/ui";
 
 const sortKeys = (v: unknown): unknown =>
   Array.isArray(v) ? v.map(sortKeys)
@@ -17,9 +18,14 @@ function locate(msg: string, text: string) {
 }
 
 export default function JsonFormatter() {
-  const [input, setInput] = useSeed('{"name":"devdrawer","tools":34,"tags":["dev","free"],"open":true}');
+  const [input, setInput] = useState('{"name":"devdrawer","tools":34,"tags":["dev","free"],"open":true}');
   const [indent, setIndent] = useState("2");
   const [sort, setSort] = useState(false);
+  useToolInput("json-formatter", (settings) => {
+    if (settings.input !== undefined) setInput(settings.input as typeof input);
+    if (settings.indent !== undefined) setIndent(settings.indent as typeof indent);
+    if (settings.sort !== undefined) setSort(settings.sort as typeof sort);
+  });
 
   let out = "", error = "", parsed: unknown;
   try {

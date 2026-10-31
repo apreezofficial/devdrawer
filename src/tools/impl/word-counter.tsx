@@ -1,9 +1,15 @@
 "use client";
 
-import { Stat, useSeed } from "@/components/ui";
+import { useToolInput } from "@/components/useToolInput";
+import { useState } from "react";
+
+import { Stat } from "@/components/ui";
 
 export default function WordCounter() {
-  const [text, setText] = useSeed();
+  const [text, setText] = useState("");
+  useToolInput("word-counter", (settings) => {
+    if (settings.text !== undefined) setText(settings.text as typeof text);
+  });
   const words = text.trim() ? text.trim().split(/\s+/).length : 0;
   const sentences = text.split(/[.!?]+(\s|$)/).filter((s) => s.trim().length > 0).length;
   const paragraphs = text.split(/\n\s*\n/).filter((p) => p.trim()).length;

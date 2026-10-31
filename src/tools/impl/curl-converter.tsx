@@ -1,7 +1,8 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useState } from "react";
-import { ErrorText, Output, useSeed } from "@/components/ui";
+import { ErrorText, Output } from "@/components/ui";
 
 type Req = { url: string; method: string; headers: [string, string][]; body?: string };
 
@@ -84,8 +85,12 @@ function toPython(r: Req) {
 }
 
 export default function CurlConverter() {
-  const [cmd, setCmd] = useSeed(`curl -X POST https://api.example.com/users \\\n  -H "Authorization: Bearer TOKEN" \\\n  -H "Content-Type: application/json" \\\n  -d '{"name":"Ada","role":"admin"}'`);
+  const [cmd, setCmd] = useState(`curl -X POST https://api.example.com/users \\\n  -H "Authorization: Bearer TOKEN" \\\n  -H "Content-Type: application/json" \\\n  -d '{"name":"Ada","role":"admin"}'`);
   const [target, setTarget] = useState<"fetch" | "axios" | "python">("fetch");
+  useToolInput("curl-converter", (settings) => {
+    if (settings.cmd !== undefined) setCmd(settings.cmd as typeof cmd);
+    if (settings.target !== undefined) setTarget(settings.target as typeof target);
+  });
   let out = "", error = "";
   try {
     const r = parse(cmd);

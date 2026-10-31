@@ -1,7 +1,8 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useEffect, useRef, useState } from "react";
-import { ErrorText, Field, Row, useSeed } from "@/components/ui";
+import { ErrorText, Field, Row } from "@/components/ui";
 
 /**
  * Chrome cuts long utterances off after ~15s and online voices can stall, so speech is
@@ -36,7 +37,7 @@ function pickDefault(voices: SpeechSynthesisVoice[]) {
 }
 
 export default function TextToSpeech() {
-  const [text, setText] = useSeed("Hello! devdrawer can read any text aloud, right in your browser.");
+  const [text, setText] = useState("Hello! devdrawer can read any text aloud, right in your browser.");
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [voice, setVoice] = useState("");
   const [rate, setRate] = useState(1);
@@ -44,6 +45,11 @@ export default function TextToSpeech() {
   const [state, setState] = useState<"idle" | "speaking" | "paused">("idle");
   const [progress, setProgress] = useState("");
   const [error, setError] = useState("");
+  useToolInput("text-to-speech", (settings) => {
+    if (settings.text !== undefined) setText(settings.text as typeof text);
+    if (settings.rate !== undefined) setRate(settings.rate as typeof rate);
+    if (settings.pitch !== undefined) setPitch(settings.pitch as typeof pitch);
+  });
   // Holding references stops Chrome from garbage-collecting utterances mid-speech.
   const queue = useRef<SpeechSynthesisUtterance[]>([]);
   const run = useRef(0);

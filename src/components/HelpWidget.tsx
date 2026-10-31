@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { renderMarkdown } from "@/lib/markdown";
 import { getTool } from "@/tools/registry";
+import { handoffToolInput } from "@/components/useToolInput";
 
 type Msg = { role: "user" | "assistant"; content: string; tool?: string; input?: string; error?: boolean };
 
@@ -82,13 +83,7 @@ export function HelpWidget() {
   };
 
   const openTool = (slug: string, seed?: string) => {
-    try {
-      sessionStorage.removeItem("devdrawer:seed");
-      if (seed) sessionStorage.setItem("devdrawer:seed", seed);
-    } catch { /* storage blocked */ }
-    if (window.location.pathname === `/tools/${slug}`) {
-      window.dispatchEvent(new Event("devdrawer:tool-input"));
-    }
+    handoffToolInput(slug, seed);
     setOpen(false);
     router.push(`/tools/${slug}`);
   };

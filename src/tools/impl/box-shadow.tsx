@@ -1,5 +1,6 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useState } from "react";
 import { Field, Output, Row } from "@/components/ui";
 
@@ -26,6 +27,10 @@ export default function BoxShadow() {
   const [layers, setLayers] = useState<Layer[]>(PRESETS.Layered);
   const [active, setActive] = useState(0);
   const [radius, setRadius] = useState(24);
+  useToolInput("box-shadow", (settings) => {
+    if (settings.radius !== undefined) setRadius(settings.radius as typeof radius);
+    if (settings.layers !== undefined) setLayers(settings.layers as typeof layers);
+  });
   const l = layers[Math.min(active, layers.length - 1)];
   const value = layers.map(css).join(",\n  ");
   const set = (patch: Partial<Layer>) => setLayers(layers.map((x, i) => (i === active ? { ...x, ...patch } : x)));

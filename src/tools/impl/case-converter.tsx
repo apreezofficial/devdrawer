@@ -1,6 +1,9 @@
 "use client";
 
-import { CopyButton, useSeed } from "@/components/ui";
+import { useToolInput } from "@/components/useToolInput";
+import { useState } from "react";
+
+import { CopyButton } from "@/components/ui";
 
 const words = (s: string) =>
   s
@@ -28,7 +31,10 @@ const cases: [string, (s: string) => string][] = [
 ];
 
 export default function CaseConverter() {
-  const [text, setText] = useSeed("hello world from devDrawer");
+  const [text, setText] = useState("hello world from devDrawer");
+  useToolInput("case-converter", (settings) => {
+    if (settings.text !== undefined) setText(settings.text as typeof text);
+  });
   return (
     <>
       <textarea rows={4} value={text} onChange={(e) => setText(e.target.value)} />

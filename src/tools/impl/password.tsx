@@ -1,5 +1,6 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useCallback, useEffect, useState } from "react";
 import { CopyButton, Field, Row } from "@/components/ui";
 
@@ -24,6 +25,11 @@ export default function PasswordTool() {
   const [opts, setOpts] = useState({ lower: true, upper: true, digits: true, symbols: true });
   const [noAmbig, setNoAmbig] = useState(false);
   const [list, setList] = useState<string[]>([]);
+  useToolInput("password", (settings) => {
+    if (settings.length !== undefined) setLength(settings.length as typeof length);
+    if (settings.opts !== undefined) setOpts((current) => ({ ...current, ...settings.opts as typeof opts }));
+    if (settings.noAmbig !== undefined) setNoAmbig(settings.noAmbig as typeof noAmbig);
+  });
 
   let pool = Object.entries(opts).filter(([, on]) => on).map(([k]) => SETS[k as keyof typeof SETS]).join("");
   if (noAmbig) pool = pool.replace(AMBIGUOUS, "");

@@ -1,7 +1,8 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useState } from "react";
-import { ErrorText, Output, Row, useSeed } from "@/components/ui";
+import { ErrorText, Output, Row } from "@/components/ui";
 
 export const utf8ToB64 = (s: string) => {
   const bytes = new TextEncoder().encode(s);
@@ -16,9 +17,14 @@ export const b64ToUtf8 = (s: string) => {
 };
 
 export default function Base64Tool() {
-  const [input, setInput] = useSeed("Hello, devdrawer 👋");
+  const [input, setInput] = useState("Hello, devdrawer 👋");
   const [mode, setMode] = useState<"encode" | "decode">("encode");
   const [urlSafe, setUrlSafe] = useState(false);
+  useToolInput("base64", (settings) => {
+    if (settings.input !== undefined) setInput(settings.input as typeof input);
+    if (settings.mode !== undefined) setMode(settings.mode as typeof mode);
+    if (settings.urlSafe !== undefined) setUrlSafe(settings.urlSafe as typeof urlSafe);
+  });
 
   let out = "", error = "";
   try {

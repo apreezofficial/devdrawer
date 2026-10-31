@@ -1,8 +1,9 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { useState } from "react";
 import { format, type SqlLanguage } from "sql-formatter";
-import { ErrorText, Field, Output, Row, useSeed } from "@/components/ui";
+import { ErrorText, Field, Output, Row } from "@/components/ui";
 
 const DIALECTS: [SqlLanguage, string][] = [
   ["sql", "Standard SQL"], ["postgresql", "PostgreSQL"], ["mysql", "MySQL"], ["mariadb", "MariaDB"],
@@ -10,10 +11,16 @@ const DIALECTS: [SqlLanguage, string][] = [
 ];
 
 export default function SqlFormatter() {
-  const [sql, setSql] = useSeed("select u.id, u.name, count(o.id) as orders from users u left join orders o on o.user_id = u.id where u.active = 1 group by u.id, u.name order by orders desc limit 10;");
+  const [sql, setSql] = useState("select u.id, u.name, count(o.id) as orders from users u left join orders o on o.user_id = u.id where u.active = 1 group by u.id, u.name order by orders desc limit 10;");
   const [lang, setLang] = useState<SqlLanguage>("sql");
   const [kwCase, setKwCase] = useState<"upper" | "lower" | "preserve">("upper");
   const [tab, setTab] = useState(2);
+  useToolInput("sql-formatter", (settings) => {
+    if (settings.sql !== undefined) setSql(settings.sql as typeof sql);
+    if (settings.lang !== undefined) setLang(settings.lang as typeof lang);
+    if (settings.kwCase !== undefined) setKwCase(settings.kwCase as typeof kwCase);
+    if (settings.tab !== undefined) setTab(settings.tab as typeof tab);
+  });
 
   let out = "", error = "";
   try {

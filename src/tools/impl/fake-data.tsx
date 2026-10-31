@@ -1,10 +1,10 @@
 "use client";
 
+import { useToolInput } from "@/components/useToolInput";
 import { faker } from "@faker-js/faker";
 import { useCallback, useEffect, useState } from "react";
 import { Field, Output, Row } from "@/components/ui";
 import { toCsv } from "@/lib/csv";
-import { parseFakeDataConfig } from "@/lib/fake-data-config";
 
 const FIELDS: Record<string, () => unknown> = {
   id: () => faker.string.uuid(),
@@ -46,29 +46,18 @@ export default function FakeData() {
   const [format, setFormat] = useState<"json" | "csv" | "sql">("json");
   const [seed, setSeed] = useState("");
   const [out, setOut] = useState("");
-
-  useEffect(() => {
-    const apply = () => {
-      try {
-        const input = sessionStorage.getItem("devdrawer:seed");
-        sessionStorage.removeItem("devdrawer:seed");
-        const config = input && parseFakeDataConfig(input);
-        if (!config) return;
-        setSelected(config.fields);
-        setCount(config.count);
-        setFormat(config.format);
-        setSeed(config.seed);
-      } catch { /* storage blocked */ }
-    };
-    apply();
-    window.addEventListener("devdrawer:tool-input", apply);
-    return () => window.removeEventListener("devdrawer:tool-input", apply);
-  }, []);
+  useToolInput("fake-data", (settings) => {
+    if (settings.fields !== undefined) setSelected(settings.fields as typeof selected);
+    if (settings.count !== undefined) setCount(settings.count as typeof count);
+    if (settings.format !== undefined) setFormat(settings.format as typeof format);
+    if (settings.seed !== undefined) setSeed(settings.seed as typeof seed);
+  });
 
   const run = useCallback(() => {
     if (!selected.length) { setOut(""); return; }
     if (seed) faker.seed(Number(seed) || [...seed].reduce((a, c) => a + c.charCodeAt(0), 0));
     else faker.seed();
+    faker.setDefaultRefDate(seed ? "2026-01-01T00:00:00.000Z" : () => new Date());
     const rows = Array.from({ length: count }, () => Object.fromEntries(selected.map((f) => [f, FIELDS[f]()])));
     if (format === "json") setOut(JSON.stringify(rows, null, 2));
     else if (format === "csv") setOut(toCsv(rows));
