@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { GITHUB_URL } from "@/config";
 import { categories, categoryIcons, categoryId, tools } from "@/tools/registry";
 import { prefersReducedMotion } from "./canvas";
-import { LogoMark, Wordmark } from "./Logo";
+import { Wordmark } from "./Logo";
 
 /** Placeholder that types tool names in and out, like a live search hint. */
 function TypedHint() {
@@ -76,7 +76,7 @@ export function SiteHeader() {
     <header className={`header ${scrolled ? "scrolled" : ""}`}>
       <div className="header-inner">
         <Link href="/" className="logo" aria-label="devdrawer home">
-          <LogoMark />
+          <span className="logo-mark">{"{}"}</span>
           <Wordmark />
         </Link>
 
