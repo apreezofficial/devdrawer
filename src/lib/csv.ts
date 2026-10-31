@@ -1,11 +1,11 @@
-const cell = (v: unknown) => {
+const cell = (v: unknown, delimiter: string) => {
   const s = v == null ? "" : typeof v === "object" ? JSON.stringify(v) : String(v);
-  return /[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  return /["\n\r]/.test(s) || s.includes(delimiter) ? `"${s.replace(/"/g, '""')}"` : s;
 };
 
 export function toCsv(rows: Record<string, unknown>[], delimiter = ",") {
   const headers = Array.from(new Set(rows.flatMap((r) => Object.keys(r))));
-  return [headers.map(cell).join(delimiter), ...rows.map((r) => headers.map((h) => cell(r[h])).join(delimiter))].join("\n");
+  return [headers.map((h) => cell(h, delimiter)).join(delimiter), ...rows.map((r) => headers.map((h) => cell(r[h], delimiter)).join(delimiter))].join("\n");
 }
 
 /** RFC 4180-ish parser: quoted fields, escaped quotes, newlines in quotes. */
