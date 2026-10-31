@@ -20,6 +20,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "ap", url: "https://x.com/apcodesphere" }],
   creator: "ap",
+  verification: { google: "6oOtFBAfrY_VNePuX9khruR2TSwXjHBwuLeEMPBLvW8" },
   alternates: { canonical: "/" },
   openGraph: { type: "website", url: SITE_URL, siteName: SITE_NAME, title: `${SITE_NAME} · ${SITE_TAGLINE}`, description: SITE_DESCRIPTION, locale: "en_US" },
   twitter: { card: "summary_large_image", creator: AUTHOR_X_HANDLE, site: AUTHOR_X_HANDLE, title: `${SITE_NAME} · ${SITE_TAGLINE}`, description: SITE_DESCRIPTION },
