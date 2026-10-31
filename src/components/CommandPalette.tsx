@@ -71,7 +71,11 @@ export function CommandPalette() {
     if (q) {
       const found = searchTools(q).filter((t) => t.status === "ready").slice(0, 14).map((t) => toolItem(t.slug)!);
       const acts = actions.filter((a) => a.label.toLowerCase().includes(q.toLowerCase()));
-      return [{ heading: "Tools", items: found }, { heading: "Actions", items: acts }].filter((g) => g.items.length);
+      const ask: Item = {
+        id: "ask-ai", label: `Ask AI: “${q.length > 48 ? q.slice(0, 48) + "…" : q}”`, icon: "✦", hint: "devdrawer AI",
+        run: () => { close(); window.dispatchEvent(new CustomEvent("devdrawer:ask", { detail: q })); },
+      };
+      return [{ heading: "Tools", items: found }, { heading: "AI", items: [ask] }, { heading: "Actions", items: acts }].filter((g) => g.items.length);
     }
     const rec = recent.map((s) => toolItem(s)).filter((x): x is Item => !!x);
     return [

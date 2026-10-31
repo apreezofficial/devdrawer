@@ -1,2 +1,3 @@
 /** @type {import("next").NextConfig} */
-export default { output: "export" };
+// Not a static export: /api/ai needs a server route to keep the Groq keys secret.
+export default {};

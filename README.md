@@ -25,11 +25,16 @@
 
 Have an idea? [Open an issue](https://github.com/apreezofficial/devdrawer/issues/new?title=Tool+request:+) or build it yourself.
 
+## AI assistant (optional)
+The "Need help?" button and ⌘K "Ask AI" are powered by Groq through a small server route (`/api/ai`), so keys never reach the browser. Every regular tool still runs 100% in your browser; only messages you send to the assistant go to Groq.
+
+Copy `.env.example` to `.env.local` and add 1 to 5 Groq keys (`GROQ_API_KEY_1` … `GROQ_API_KEY_5`). Requests rotate across keys and fail over on rate limits. Without a key, the assistant shows a friendly "not configured" message.
+
 ## Run it
 ```bash
 npm install
 npm run dev     # http://localhost:3000
-npm run build   # static site in ./out
+npm run build && npm start
 ```
 
 ## Contributing

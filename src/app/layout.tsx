@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
 import { CommandPalette } from "@/components/CommandPalette";
+import { HelpWidget } from "@/components/HelpWidget";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import "./globals.css";
@@ -19,6 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="container">{children}</main>
         <SiteFooter />
         <CommandPalette />
+        <HelpWidget />
       </body>
     </html>
   );
