@@ -6,21 +6,24 @@
 - **Smart paste**: paste anything (JWT, hex color, timestamp, JSON, base64, URL…) and it picks the right tool.
 - **⌘K / Ctrl+K command palette**: jump to any tool from anywhere.
 - **Offline & private**: static Next.js export, no backend, no tracking.
-- **34 tools ready, more on the way**, with each "Soon" card an open invitation to contribute.
+- **54 tools**, and adding a new one takes a single file.
 
 ## Tools
-| Category | Ready |
+| Category | Tools |
 |---|---|
-| Text | Word Counter, Case Converter, Text Diff, Lorem Ipsum, Slugify, Line Sorter/Deduper, Find & Replace |
-| Generators | UUID (v4/v7/nanoid), Password, Fake Data (JSON/CSV/SQL), Random Number |
-| Crypto & Security | Hash (SHA family, text or file), HMAC, JWT Decoder |
+| Text | Word Counter, Case Converter, Text Diff, Lorem Ipsum, Slugify, Line Sorter/Deduper, Find & Replace, Markdown Preview, Text to Speech |
+| Generators | UUID (v4/v7/nanoid), Password, Fake Data (JSON/CSV/SQL), Random Number, QR Code, Barcode, .gitignore |
+| Crypto & Security | Hash (SHA family, text or file), HMAC, JWT Decoder, Bcrypt hash & verify, RSA key pairs |
 | Encoding | Base64, URL encode/parse, HTML entities, Number base, Image → Base64 |
-| Data & Code | JSON Formatter, JSON ↔ CSV, Regex Tester |
-| Color & Design | Color Picker (+EyeDropper), Contrast Checker, Image Palette, CSS Gradient |
-| Image | Image Compressor, Image Cropper |
-| Time / Web / Math | Timestamp, HTTP Status, User-Agent Parser, Chmod, Unit Converter, Percentage |
+| Data & Code | JSON Formatter, JSON ↔ CSV, JSON ↔ YAML, Regex Tester, SQL Formatter, cURL → fetch/axios/Python, JSON → TypeScript |
+| Color & Design | Color Picker (+EyeDropper), Contrast Checker, Image Palette, CSS Gradient, Box Shadow |
+| Image | Image Compressor, Image Cropper, Image Format Converter, Favicon Generator |
+| Video & Audio | Video Trimmer, Video → GIF |
+| Time & Date | Unix Timestamp, Cron Explainer, Time Zone Converter |
+| Web & Network | HTTP Status, User-Agent Parser, Chmod, Meta Tag Generator |
+| Math & Units | Unit Converter, Percentage, Aspect Ratio |
 
-**Coming soon (help wanted):** QR code, barcode, .gitignore, bcrypt, RSA keys, Markdown preview, text-to-speech, JSON ↔ YAML, SQL formatter, cURL → fetch, JSON → TypeScript, box shadow, image format converter, favicon, video trimmer, video → GIF, cron explainer, time zones, meta tags, aspect ratio.
+Have an idea? [Open an issue](https://github.com/apreezofficial/alldevneedy/issues/new?title=Tool+request:+) or build it yourself.
 
 ## Run it
 ```bash

@@ -16,7 +16,7 @@ const SUBTITLES: Record<string, string> = {
   "Data & Code": "Format, convert and test what you ship.",
   "Color & Design": "Pick, check and extract colors.",
   Image: "Compress and crop without uploading anything.",
-  "Video & Audio": "Media tools are coming next.",
+  "Video & Audio": "Trim clips and make GIFs, no upload.",
   "Time & Date": "Timestamps, zones and schedules.",
   "Web & Network": "Status codes, user agents and permissions.",
   "Math & Units": "Quick conversions and calculations.",
@@ -58,7 +58,7 @@ export function Home() {
   return (
     <>
       <section className="hero">
-        <div className="eyebrow"><span className="eyebrow-dot" />{ready} tools live · {tools.length - ready} in the works</div>
+        <div className="eyebrow"><span className="eyebrow-dot" />{ready} tools live{tools.length > ready ? ` · ${tools.length - ready} in the works` : " · all free"}</div>
         <h1>Every tool a developer<br /><span className="dim">ends up Googling.</span></h1>
         <p className="lead">Hashes, UUIDs, colors, fake data, regex, images and more. Open source, and everything runs in your browser.</p>
 
@@ -141,7 +141,7 @@ export function Home() {
 
       <section className="contribute">
         <h2>Missing a tool?<br />Build it in five minutes.</h2>
-        <p>Every “Soon” card is a good first issue. One file, one registry line, and your tool ships to every developer who visits.</p>
+        <p>Open an issue with your idea, or build it yourself: one file and one registry line, and your tool ships to every developer who visits.</p>
         <div className="cta-row">
           <a className="btn btn-lg" href={`${GITHUB_URL}/blob/main/CONTRIBUTING.md`} target="_blank" rel="noreferrer">Read the guide</a>
           <a className="btn btn-lg btn-ghost" href={`${GITHUB_URL}/issues/new?title=Tool+request:+`} target="_blank" rel="noreferrer">Request a tool</a>
