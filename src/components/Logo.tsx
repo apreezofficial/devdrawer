@@ -1,19 +1,15 @@
 /**
- * The devdrawer mark: a two-drawer cabinet. On hover (of the parent .logo) the top
- * drawer slides open and a </> peeks out of it.
+ * The devdrawer mark: curly braces holding three dots, an outline icon.
+ * The braces draw in on load; the dots ripple like a typing indicator on hover of the parent .logo.
  */
 export function LogoMark({ size = 30 }: { size?: number }) {
   return (
     <svg className="mark" width={size} height={size} viewBox="0 0 32 32" aria-hidden="true">
-      <rect className="mark-body" x="4" y="4" width="24" height="24" rx="7" />
-      {/* Code that lives in the top drawer, revealed when it slides open */}
-      <path className="mark-code" d="M12.2 9.4 10 11.25l2.2 1.85M19.8 9.4 22 11.25l-2.2 1.85M17 8.6l-2 5.3" fill="none" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      <g className="mark-drawer-top">
-        <rect className="mark-front" x="7.5" y="7.5" width="17" height="7.5" rx="2.6" />
-        <rect className="mark-handle" x="13" y="10.5" width="6" height="1.6" rx=".8" />
-      </g>
-      <rect className="mark-front" x="7.5" y="17" width="17" height="7.5" rx="2.6" />
-      <rect className="mark-handle" x="13" y="20" width="6" height="1.6" rx=".8" />
+      <path className="mark-brace" pathLength={1} d="M11 5.5c-2.6 0-3.6 1.2-3.6 3.6v3.4c0 1.9-.9 3.1-2.9 3.5 2 .4 2.9 1.6 2.9 3.5v3.4c0 2.4 1 3.6 3.6 3.6" />
+      <path className="mark-brace" pathLength={1} d="M21 5.5c2.6 0 3.6 1.2 3.6 3.6v3.4c0 1.9.9 3.1 2.9 3.5-2 .4-2.9 1.6-2.9 3.5v3.4c0 2.4-1 3.6-3.6 3.6" />
+      <circle className="mark-dot" cx="12.6" cy="16" r="1.25" />
+      <circle className="mark-dot" cx="16" cy="16" r="1.25" />
+      <circle className="mark-dot" cx="19.4" cy="16" r="1.25" />
     </svg>
   );
 }
