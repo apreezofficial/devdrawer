@@ -15,7 +15,7 @@ const PRESETS: [string, string][] = [
 export default function RegexTool() {
   const [pattern, setPattern] = useState("[\\w.+-]+@[\\w-]+\\.[\\w.]+");
   const [flags, setFlags] = useState("g");
-  const [text, setText] = useState("Contact ada@example.com or linus@kernel.org.\nVisit https://alldevneedy.dev on 2026-10-31.");
+  const [text, setText] = useState("Contact ada@example.com or linus@kernel.org.\nVisit https://devdrawer.xyz on 2026-10-31.");
 
   const { nodes, matches, error } = useMemo(() => {
     if (!pattern) return { nodes: [text], matches: [] as RegExpMatchArray[], error: "" };

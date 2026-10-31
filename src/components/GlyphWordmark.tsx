@@ -19,6 +19,9 @@ export function GlyphWordmark({ text }: { text: string }) {
     let w = 0, h = 0, cols = 0, rows = 0, color = "#fff", fontPx = 0;
     let mask = new Uint8Array(0);
     let seed = new Float32Array(0);
+    const theme = window.matchMedia("(prefers-color-scheme: dark)");
+    const readColor = () => { color = cssVar(canvas, "--on-ink"); };
+    theme.addEventListener("change", readColor);
 
     const stop = runCanvas(canvas, {
       fps: 30,
@@ -26,7 +29,7 @@ export function GlyphWordmark({ text }: { text: string }) {
         w = cw; h = ch;
         cols = Math.floor(w / CELL);
         rows = Math.floor(h / CELL);
-        color = cssVar(canvas, "--on-ink");
+        readColor();
 
         // Rasterize the word once at grid resolution to get the cell mask.
         const off = document.createElement("canvas");
@@ -94,7 +97,7 @@ export function GlyphWordmark({ text }: { text: string }) {
       },
     });
 
-    return () => { stop(); pointer.dispose(); };
+    return () => { stop(); pointer.dispose(); theme.removeEventListener("change", readColor); };
   }, [text]);
 
   return <canvas ref={ref} className="glyph-wordmark" role="img" aria-label={text} />;

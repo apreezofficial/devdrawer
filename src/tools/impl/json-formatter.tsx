@@ -17,7 +17,7 @@ function locate(msg: string, text: string) {
 }
 
 export default function JsonFormatter() {
-  const [input, setInput] = useSeed('{"name":"AllDevNeedy","tools":34,"tags":["dev","free"],"open":true}');
+  const [input, setInput] = useSeed('{"name":"devdrawer","tools":34,"tags":["dev","free"],"open":true}');
   const [indent, setIndent] = useState("2");
   const [sort, setSort] = useState(false);
 

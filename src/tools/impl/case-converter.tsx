@@ -28,7 +28,7 @@ const cases: [string, (s: string) => string][] = [
 ];
 
 export default function CaseConverter() {
-  const [text, setText] = useSeed("hello world from allDevNeedy");
+  const [text, setText] = useSeed("hello world from devDrawer");
   return (
     <>
       <textarea rows={4} value={text} onChange={(e) => setText(e.target.value)} />

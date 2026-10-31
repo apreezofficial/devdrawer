@@ -4,7 +4,7 @@ import { useState } from "react";
 import YAML from "yaml";
 import { ErrorText, Field, Output, Row } from "@/components/ui";
 
-const SAMPLE = '{\n  "name": "alldevneedy",\n  "version": "0.1.0",\n  "tools": ["uuid", "hash"],\n  "private": true\n}';
+const SAMPLE = '{\n  "name": "devdrawer",\n  "version": "0.1.0",\n  "tools": ["uuid", "hash"],\n  "private": true\n}';
 
 export default function JsonYaml() {
   const [mode, setMode] = useState<"j2y" | "y2j">("j2y");

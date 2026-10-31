@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { ErrorText, Field, Row, useSeed } from "@/components/ui";
 
 export default function TextToSpeech() {
-  const [text, setText] = useSeed("Hello! AllDevNeedy can read any text aloud, right in your browser.");
+  const [text, setText] = useSeed("Hello! devdrawer can read any text aloud, right in your browser.");
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [voice, setVoice] = useState("");
   const [rate, setRate] = useState(1);

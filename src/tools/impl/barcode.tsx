@@ -5,17 +5,17 @@ import { useEffect, useRef, useState } from "react";
 import { ErrorText, Field, Row } from "@/components/ui";
 
 const FORMATS: [string, string, string][] = [
-  ["CODE128", "Code 128 (any text)", "AllDevNeedy-123"],
+  ["CODE128", "Code 128 (any text)", "devdrawer-123"],
   ["EAN13", "EAN-13", "5901234123457"],
   ["EAN8", "EAN-8", "96385074"],
   ["UPC", "UPC-A", "123456789999"],
-  ["CODE39", "Code 39", "ADN 2026"],
+  ["CODE39", "Code 39", "DEV 2026"],
   ["ITF14", "ITF-14", "15400141288763"],
 ];
 
 export default function BarcodeTool() {
   const [format, setFormat] = useState("CODE128");
-  const [value, setValue] = useState("AllDevNeedy-123");
+  const [value, setValue] = useState("devdrawer-123");
   const [showText, setShowText] = useState(true);
   const [height, setHeight] = useState(100);
   const [error, setError] = useState("");

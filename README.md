@@ -1,4 +1,4 @@
-# AllDevNeedy
+# devdrawer
 
 **Every tool a developer ends up Googling, in one place.** Hashes, UUIDs, colors, fake data, regex, image tools and more. Free, open source, and 100% in your browser: nothing you paste ever leaves your device.
 
@@ -23,7 +23,7 @@
 | Web & Network | HTTP Status, User-Agent Parser, Chmod, Meta Tag Generator |
 | Math & Units | Unit Converter, Percentage, Aspect Ratio |
 
-Have an idea? [Open an issue](https://github.com/apreezofficial/alldevneedy/issues/new?title=Tool+request:+) or build it yourself.
+Have an idea? [Open an issue](https://github.com/apreezofficial/devdrawer/issues/new?title=Tool+request:+) or build it yourself.
 
 ## Run it
 ```bash

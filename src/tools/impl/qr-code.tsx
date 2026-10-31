@@ -8,7 +8,7 @@ type Mode = "text" | "wifi" | "email";
 
 export default function QrCodeTool() {
   const [mode, setMode] = useState<Mode>("text");
-  const [text, setText] = useState("https://github.com/apreezofficial/alldevneedy");
+  const [text, setText] = useState("https://github.com/apreezofficial/devdrawer");
   const [ssid, setSsid] = useState("MyWiFi");
   const [pass, setPass] = useState("");
   const [sec, setSec] = useState("WPA");

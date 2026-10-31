@@ -52,7 +52,7 @@ export function Home() {
 
   const open = (slug: string) => {
     // Hand the input over via sessionStorage, never the URL, so tokens stay out of history.
-    try { sessionStorage.setItem("adn:seed", paste.trim()); } catch { /* storage blocked */ }
+    try { sessionStorage.setItem("devdrawer:seed", paste.trim()); } catch { /* storage blocked */ }
     router.push(`/tools/${slug}`);
   };
 
@@ -83,7 +83,7 @@ export function Home() {
               >
                 <span className="fc-label">{c.label}</span>
                 <span className="fc-big" style={{ whiteSpace: "pre-wrap" }}>{c.big}</span>
-                <span className="fc-foot"><span>alldevneedy</span><span className="fc-pill">Open →</span></span>
+                <span className="fc-foot"><span>devdrawer</span><span className="fc-pill">Open →</span></span>
               </Link>
             );
           })}

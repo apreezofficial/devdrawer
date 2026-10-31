@@ -68,7 +68,7 @@ export function renderMarkdown(src: string) {
   return out.join("\n");
 }
 
-const SAMPLE = `# Hello AllDevNeedy
+const SAMPLE = `# Hello devdrawer
 
 Write **bold**, *italic*, ~~strike~~ and \`code\`.
 

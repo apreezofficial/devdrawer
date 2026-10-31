@@ -16,7 +16,7 @@ export const b64ToUtf8 = (s: string) => {
 };
 
 export default function Base64Tool() {
-  const [input, setInput] = useSeed("Hello, AllDevNeedy 👋");
+  const [input, setInput] = useSeed("Hello, devdrawer 👋");
   const [mode, setMode] = useState<"encode" | "decode">("encode");
   const [urlSafe, setUrlSafe] = useState(false);
 

@@ -14,7 +14,7 @@ type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const tool = getTool((await params).slug);
-  return tool ? { title: `${tool.name} — AllDevNeedy`, description: tool.description } : {};
+  return tool ? { title: `${tool.name} — devdrawer`, description: tool.description } : {};
 }
 
 export default async function ToolPage({ params }: Props) {

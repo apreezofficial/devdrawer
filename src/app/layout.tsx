@@ -8,7 +8,7 @@ import { GITHUB_URL, SITE_NAME } from "@/config";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AllDevNeedy — every tool a developer searches for",
+  title: "devdrawer — every tool a developer searches for",
   description: "Hash, UUID, color, fake data, regex, image and dozens more developer tools. Free, open source, 100% in your browser.",
 };
 

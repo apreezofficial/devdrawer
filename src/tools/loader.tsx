@@ -1,7 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import type { ComponentType } from "react";
+import { useEffect, type ComponentType } from "react";
+import { rememberTool } from "@/components/CommandPalette";
 
 /**
  * Adding a tool: create `src/tools/impl/<slug>.tsx` with a default export,
@@ -68,5 +69,6 @@ const impls: Record<string, ComponentType> = {
 
 export function ToolView({ slug }: { slug: string }) {
   const Impl = impls[slug];
+  useEffect(() => rememberTool(slug), [slug]);
   return Impl ? <Impl /> : <p className="error">This tool isn&apos;t wired up yet.</p>;
 }

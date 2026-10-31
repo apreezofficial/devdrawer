@@ -7,11 +7,11 @@ const attr = (s: string) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").rep
 
 export default function MetaTags() {
   const [m, setM] = useState({
-    title: "AllDevNeedy: every tool a developer ends up Googling",
+    title: "devdrawer: every tool a developer ends up Googling",
     description: "Hashes, UUIDs, colors, fake data, regex and more. Free, open source and 100% in your browser.",
-    url: "https://alldevneedy.dev",
-    image: "https://alldevneedy.dev/og.png",
-    site: "AllDevNeedy",
+    url: "https://devdrawer.xyz",
+    image: "https://devdrawer.xyz/og.png",
+    site: "devdrawer",
     twitter: "",
     theme: "#171717",
   });

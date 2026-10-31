@@ -1,4 +1,4 @@
-# Contributing to AllDevNeedy
+# Contributing to devdrawer
 
 ## Add a tool in 3 steps
 1. **Create** `src/tools/impl/<slug>.tsx` with a default-exported React component (`"use client"` at the top). Reuse the helpers in `src/components/ui.tsx` (`Field`, `Output`, `CopyButton`, `FileDrop`, `useSeed`…).

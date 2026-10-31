@@ -63,8 +63,8 @@ export function useSeed(fallback = ""): [string, (v: string) => void] {
   const [value, setValue] = useState(fallback);
   useEffect(() => {
     try {
-      const q = sessionStorage.getItem("adn:seed");
-      sessionStorage.removeItem("adn:seed");
+      const q = sessionStorage.getItem("devdrawer:seed");
+      sessionStorage.removeItem("devdrawer:seed");
       if (q) setValue(q);
     } catch { /* storage blocked */ }
   }, []);
