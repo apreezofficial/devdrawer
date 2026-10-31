@@ -26,9 +26,16 @@
 Have an idea? [Open an issue](https://github.com/apreezofficial/devdrawer/issues/new?title=Tool+request:+) or build it yourself.
 
 ## AI assistant (optional)
-The "Need help?" button and ⌘K "Ask AI" are powered by Groq through a small server route (`/api/ai`), so keys never reach the browser. Every regular tool still runs 100% in your browser; only messages you send to the assistant go to Groq.
+The "Need help?" button and ⌘K "Ask AI" use **Gemini as the primary provider, with Groq as a fallback**, through the server route (`/api/ai`). API keys never reach the browser. Every regular tool runs locally; assistant messages are sent to the provider handling the request.
 
-Copy `.env.example` to `.env.local` and add 1 to 5 Groq keys (`GROQ_API_KEY_1` … `GROQ_API_KEY_5`). Requests rotate across keys and fail over on rate limits. Without a key, the assistant shows a friendly "not configured" message.
+Copy `.env.example` to `.env.local`:
+
+- Set `GEMINI_API_KEY` (or `GOOGLE_API_KEY`) to enable Gemini. `GEMINI_MODEL` defaults to `gemini-3.8-flash`. The integration uses Google's [Generate Content API](https://ai.google.dev/api/generate-content) with JSON output.
+- Optionally add `GROQ_API_KEY` or `GROQ_API_KEY_1` … `GROQ_API_KEY_5` for backup. Groq keys rotate and fail over on rate limits.
+- Without a Gemini key, requests go directly to Groq. Gemini errors, timeouts, or unusable responses also fall back to Groq when configured.
+- Without either provider's key, the assistant returns a "not configured" message. The chat footer identifies the provider that actually answered after a successful response.
+
+Gemini integration is implemented; actual Gemini usage requires a working key. A deployment configured only with Groq uses Groq.
 
 ## Run it
 ```bash

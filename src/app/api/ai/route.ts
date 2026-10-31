@@ -2,23 +2,13 @@ import { NextResponse } from "next/server";
 import { tools } from "@/tools/registry";
 import { TOOL_INPUT_GUIDE } from "@/lib/tool-input";
 import { parseAIResponse } from "@/lib/ai-response";
+import { createAIClient, type AIMessage } from "@/lib/ai-provider";
 
 export const runtime = "nodejs";
 
-const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 const MAX_MESSAGES = 16;
 const MAX_CHARS = 6000;
-
-/** Up to five keys: GROQ_API_KEY_1..GROQ_API_KEY_5, plus a plain GROQ_API_KEY. */
-const KEYS = [
-  process.env.GROQ_API_KEY,
-  ...[1, 2, 3, 4, 5].map((n) => process.env[`GROQ_API_KEY_${n}`]),
-].filter((k): k is string => !!k && k.trim().length > 0);
-
-const MODELS = [process.env.GROQ_MODEL || "openai/gpt-oss-120b", process.env.GROQ_FALLBACK_MODEL || "openai/gpt-oss-20b"];
-
-// Round-robin start so load spreads across keys; on 429/5xx we fail over to the next one.
-let cursor = 0;
+const ai = createAIClient(process.env);
 
 // Best-effort per-IP limiter. Serverless instances don't share memory, so this caps
 // bursts per instance rather than being a global quota.
@@ -63,45 +53,9 @@ Tool setting contracts (JSON schema properties; numeric bounds apply):
 ${TOOL_INPUT_GUIDE}
 Never ask for or repeat passwords, API keys or other secrets. If the user pastes one, tell them to rotate it.`;
 
-type Msg = { role: "user" | "assistant"; content: string };
-
-async function callGroq(messages: Msg[]) {
-  let lastStatus = 0;
-  for (const model of MODELS) {
-    for (let i = 0; i < KEYS.length; i++) {
-      const key = KEYS[(cursor + i) % KEYS.length];
-      const res = await fetch(GROQ_URL, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model,
-          messages: [{ role: "system", content: SYSTEM }, ...messages],
-          response_format: { type: "json_object" },
-          reasoning_effort: "low",
-          temperature: 0.3,
-          max_completion_tokens: 3000,
-        }),
-        signal: AbortSignal.timeout(25_000),
-      }).catch(() => null);
-
-      if (res?.ok) {
-        cursor = (cursor + i + 1) % KEYS.length;
-        const data = await res.json();
-        return { content: String(data.choices?.[0]?.message?.content ?? ""), model };
-      }
-      lastStatus = res?.status ?? 0;
-      // Bad request won't be fixed by another key; a missing model is fixed by the fallback model.
-      if (lastStatus === 400) break;
-      if (lastStatus === 404) break;
-    }
-  }
-  throw Object.assign(new Error("All AI providers failed"), { status: lastStatus });
-}
-
-
 export async function POST(req: Request) {
-  if (!KEYS.length) {
-    return NextResponse.json({ error: "AI isn't configured yet. Add GROQ_API_KEY_1 in your environment." }, { status: 503 });
+  if (!ai.configured) {
+    return NextResponse.json({ error: "AI isn't configured yet. Add GEMINI_API_KEY or GROQ_API_KEY_1 in your environment." }, { status: 503 });
   }
 
   const ip = (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || "anon";
@@ -109,13 +63,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Slow down a little. Try again in a few minutes." }, { status: 429 });
   }
 
-  let messages: Msg[];
+  let messages: AIMessage[];
   try {
     const body = await req.json();
     messages = (Array.isArray(body?.messages) ? body.messages : [])
-      .filter((m: Msg) => (m?.role === "user" || m?.role === "assistant") && typeof m.content === "string")
+      .filter((m: AIMessage) => (m?.role === "user" || m?.role === "assistant") && typeof m.content === "string")
       .slice(-MAX_MESSAGES)
-      .map((m: Msg) => ({ role: m.role, content: m.content.slice(0, MAX_CHARS) }));
+      .map((m: AIMessage) => ({ role: m.role, content: m.content.slice(0, MAX_CHARS) }));
   } catch {
     return NextResponse.json({ error: "Bad request." }, { status: 400 });
   }
@@ -124,10 +78,10 @@ export async function POST(req: Request) {
   }
 
   try {
-    const { content } = await callGroq(messages);
+    const { content, provider } = await ai.complete(SYSTEM, messages);
     const out = parseAIResponse(content, tools.filter((t) => t.status === "ready").map((t) => t.slug));
     if (!out.reply && !out.tool) throw new Error("empty");
-    return NextResponse.json(out);
+    return NextResponse.json({ ...out, provider });
   } catch (e) {
     const status = (e as { status?: number }).status;
     const busy = status === 429;

@@ -29,6 +29,7 @@ export function HelpWidget() {
   const [historyLoaded, setHistoryLoaded] = useState(false);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
+  const [provider, setProvider] = useState<"Gemini" | "Groq" | null>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -74,6 +75,7 @@ export function HelpWidget() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || "Something went wrong.");
+      if (data.provider === "Gemini" || data.provider === "Groq") setProvider(data.provider);
       setMessages((m) => [...m, { role: "assistant", content: data.reply || "Here you go.", tool: data.tool, input: data.input }]);
     } catch (e) {
       setMessages((m) => [...m, { role: "assistant", content: (e as Error).message, error: true }]);
@@ -146,7 +148,7 @@ export function HelpWidget() {
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M5 12l7-7 7 7" /></svg>
             </button>
           </form>
-          <div className="help-foot">Powered by Groq · Don&apos;t paste passwords or keys</div>
+          <div className="help-foot">{provider ? `Powered by ${provider}` : "Gemini primary · Groq fallback"} · Don&apos;t paste passwords or keys</div>
         </div>
       )}
 
