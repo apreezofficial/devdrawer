@@ -248,21 +248,31 @@ th { font-size: 12px; color: var(--muted); font-weight: 600; background: var(--f
 .hero h1, .hero p.lead, .eyebrow { position: relative; }
 .hero h1, .hero p.lead { text-shadow: 0 0 24px var(--bg), 0 0 12px var(--bg); }
 
-/* ── CTA → footer slab ──────────────────────── */
-.slab { background: var(--ink); color: var(--on-ink); border-radius: 40px 40px 0 0; margin-top: 24px; overflow: hidden; }
-.slab-inner { max-width: 1120px; margin: 0 auto; padding: clamp(48px, 8vw, 96px) 16px 28px; }
+/* ── CTA → footer slab (always dark, in both themes) ── */
+.slab { --slab-bg: #0b0b0c; --slab-fg: #ededed; --slab-dim: rgba(237,237,237,.6); --slab-line: rgba(237,237,237,.1);
+  background: var(--slab-bg); color: var(--slab-fg); border-radius: 40px 40px 0 0; margin-top: 24px; overflow: hidden; }
+@media (prefers-color-scheme: dark) { .slab { border-top: 1px solid var(--slab-line); } }
+.slab-inner { max-width: 1120px; margin: 0 auto; padding: clamp(48px, 8vw, 96px) 16px 0; }
 .slab-cta { text-align: center; }
-.slab-eyebrow { display: inline-block; font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 99px; border: 1px solid color-mix(in srgb, var(--on-ink) 18%, transparent); color: color-mix(in srgb, var(--on-ink) 70%, transparent); margin-bottom: 20px; }
+.slab-eyebrow { display: inline-block; font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 99px; border: 1px solid var(--slab-line); color: var(--slab-dim); margin-bottom: 20px; }
 .slab-cta h2 { font-size: clamp(32px, 5.4vw, 58px); letter-spacing: -0.05em; line-height: 1.04; margin: 0 0 14px; }
-.slab-cta p { color: color-mix(in srgb, var(--on-ink) 62%, transparent); margin: 0 auto 28px; max-width: 520px; font-size: 16px; }
-.slab-btn { background: var(--on-ink); color: var(--ink); }
-.slab-ghost { background: transparent; color: var(--on-ink); border-color: color-mix(in srgb, var(--on-ink) 25%, transparent); height: 52px; padding: 0 26px; font-size: 15px; }
-.glyph-wordmark { display: block; width: 100%; height: clamp(110px, 17vw, 210px); margin: clamp(40px, 7vw, 80px) 0 clamp(24px, 4vw, 40px); cursor: crosshair; touch-action: pan-y; }
-.slab-bottom { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-top: 22px; border-top: 1px solid color-mix(in srgb, var(--on-ink) 14%, transparent); font-size: 14px; }
-.slab-bottom nav { display: flex; gap: 22px; flex-wrap: wrap; }
-.slab-bottom nav a, .slab-note { color: color-mix(in srgb, var(--on-ink) 62%, transparent); }
-.slab-bottom nav a:hover { color: var(--on-ink); }
-.slab-mark { background: var(--on-ink); color: var(--ink); }
+.slab-cta p { color: var(--slab-dim); margin: 0 auto 28px; max-width: 520px; font-size: 16px; }
+.slab-btn { background: var(--slab-fg); color: var(--slab-bg); }
+.slab-ghost { background: transparent; color: var(--slab-fg); border-color: rgba(237,237,237,.22); height: 52px; padding: 0 26px; font-size: 15px; }
+
+/* The wordmark is taller than its window, so the footer row crops its bottom. */
+.slab-mark { position: relative; height: clamp(78px, 12vw, 150px); margin-top: clamp(48px, 8vw, 88px); overflow: hidden; }
+.glyph-wordmark { position: absolute; left: 0; top: 0; display: block; width: 100%; height: clamp(110px, 17vw, 210px); cursor: crosshair; touch-action: pan-y; }
+
+.slab-bottom { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 4px 22px; border-top: 1px solid var(--slab-line); background: var(--slab-bg); }
+.slab-x { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; color: var(--slab-dim); transition: color .15s, background .15s; }
+.slab-x:hover { color: var(--slab-fg); background: rgba(237,237,237,.08); }
+
+.signature { display: inline-block; font: 400 44px/1 "Mrs Saint Delafield", cursive; color: #e4e4e7; padding: 4px 10px 0 2px;
+  clip-path: inset(0 100% 0 0); transition: clip-path 2.2s cubic-bezier(.45,.05,.3,1); }
+.signature.written { clip-path: inset(0 -4px 0 0); }
+a:hover .signature { color: #fff; }
+@media (prefers-reduced-motion: reduce) { .signature { clip-path: none; } }
 
 /* ── Command menu (kmenu-style) ─────────────── */
 .km-backdrop { position: fixed; inset: 0; z-index: 60; background: rgba(10,10,10,.45); backdrop-filter: blur(6px); display: flex; justify-content: center; align-items: flex-start; padding: 12vh 16px 16px; animation: fade .15s ease-out; }

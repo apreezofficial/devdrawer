@@ -1,9 +1,12 @@
-import Link from "next/link";
-import { GITHUB_URL, SITE_NAME } from "@/config";
+import { AUTHOR_X_URL, GITHUB_URL, SITE_NAME } from "@/config";
 import { tools } from "@/tools/registry";
 import { GlyphWordmark } from "./GlyphWordmark";
+import { Signature } from "./Signature";
 
-/** The CTA flows straight into the footer on one dark slab, topped by the interactive wordmark. */
+/**
+ * The CTA flows into the footer on one always-dark slab. The giant wordmark peeks up
+ * from behind the bottom row, which holds the signature and an X link.
+ */
 export function SiteFooter() {
   return (
     <footer className="slab">
@@ -18,16 +21,19 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <GlyphWordmark text={SITE_NAME} />
+        <div className="slab-mark">
+          <GlyphWordmark text={SITE_NAME} />
+        </div>
 
         <div className="slab-bottom">
-          <Link href="/" className="logo"><span className="logo-mark slab-mark">{"{}"}</span>{SITE_NAME}</Link>
-          <nav>
-            <a href={GITHUB_URL} target="_blank" rel="noreferrer">GitHub</a>
-            <a href={`${GITHUB_URL}/issues/new?title=Tool+request:+`} target="_blank" rel="noreferrer">Request a tool</a>
-            <a href={`${GITHUB_URL}/blob/main/CONTRIBUTING.md`} target="_blank" rel="noreferrer">Contributing</a>
-          </nav>
-          <span className="slab-note">Runs entirely in your browser</span>
+          <a href={AUTHOR_X_URL} target="_blank" rel="noreferrer" aria-label="ap on X">
+            <Signature />
+          </a>
+          <a href={AUTHOR_X_URL} target="_blank" rel="noreferrer" aria-label="ap on X" className="slab-x">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644Z" />
+            </svg>
+          </a>
         </div>
       </div>
     </footer>

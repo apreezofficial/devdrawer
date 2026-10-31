@@ -20,7 +20,7 @@ export function GlyphWordmark({ text }: { text: string }) {
     let mask = new Uint8Array(0);
     let seed = new Float32Array(0);
     const theme = window.matchMedia("(prefers-color-scheme: dark)");
-    const readColor = () => { color = cssVar(canvas, "--on-ink"); };
+    const readColor = () => { color = cssVar(canvas, "--slab-fg"); };
     theme.addEventListener("change", readColor);
 
     const stop = runCanvas(canvas, {
