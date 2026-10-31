@@ -113,7 +113,7 @@ kbd { font-family: var(--mono); font-size: 11px; border-radius: 99px; padding: 3
 .chip-strong { background: var(--ink); color: var(--on-ink); border-color: var(--ink); font-weight: 600; }
 
 /* ── Sections & cards ────────────────────────── */
-.toolbar { position: sticky; top: 88px; z-index: 20; display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 14px 0; margin-top: 72px; background: linear-gradient(var(--bg) 70%, transparent); }
+.toolbar { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 14px 0; margin-top: 72px; background: linear-gradient(var(--bg) 70%, transparent); }
 .toolbar input[type=search] { max-width: 420px; border-radius: 99px; height: 46px; padding: 0 20px; text-align: center; background: var(--faint-2); }
 .toolbar .chips { justify-content: center; margin: 0; }
 
@@ -226,7 +226,6 @@ th { font-size: 12px; color: var(--muted); font-weight: 600; background: var(--f
   .header-inner { height: 56px; }
   .kbd-btn span.lbl, .badge { display: none; }
   .fan { height: 240px; transform: scale(.72); transform-origin: top center; margin-bottom: -40px; }
-  .toolbar { top: 72px; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 
