@@ -25,6 +25,7 @@ export function HelpWidget() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
+  const [historyLoaded, setHistoryLoaded] = useState(false);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -33,6 +34,7 @@ export function HelpWidget() {
   // Keep the conversation for this tab session only.
   useEffect(() => {
     try { setMessages(JSON.parse(sessionStorage.getItem(STORE) || "[]")); } catch { /* storage blocked */ }
+    setHistoryLoaded(true);
     const onOpen = (e: Event) => {
       setOpen(true);
       const q = (e as CustomEvent<string>).detail;
@@ -43,9 +45,10 @@ export function HelpWidget() {
   }, []);
 
   useEffect(() => {
+    if (!historyLoaded) return;
     try { sessionStorage.setItem(STORE, JSON.stringify(messages.slice(-30))); } catch { /* storage blocked */ }
     bodyRef.current?.scrollTo({ top: bodyRef.current.scrollHeight, behavior: "smooth" });
-  }, [messages, busy]);
+  }, [messages, busy, historyLoaded]);
 
   useEffect(() => {
     if (!open) return;
@@ -79,7 +82,14 @@ export function HelpWidget() {
   };
 
   const openTool = (slug: string, seed?: string) => {
-    try { if (seed) sessionStorage.setItem("devdrawer:seed", seed); } catch { /* storage blocked */ }
+    try {
+      sessionStorage.removeItem("devdrawer:seed");
+      if (seed) sessionStorage.setItem("devdrawer:seed", seed);
+    } catch { /* storage blocked */ }
+    if (window.location.pathname === `/tools/${slug}`) {
+      window.dispatchEvent(new Event("devdrawer:tool-input"));
+    }
+    setOpen(false);
     router.push(`/tools/${slug}`);
   };
 

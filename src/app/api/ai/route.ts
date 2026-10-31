@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { tools } from "@/tools/registry";
+import { FAKE_DATA_FIELDS, parseFakeDataConfig } from "@/lib/fake-data-config";
 
 export const runtime = "nodejs";
 
@@ -49,6 +50,9 @@ Always reply with a single JSON object, no prose around it:
 - "reply": your answer in concise Markdown. Use fenced code blocks for code. Keep it short and practical.
 - "tool": include ONLY when one of the tools above would help the user right now; must be an exact slug from the list.
 - "input": optional text to pre-fill that tool with (e.g. the regex, cron expression, SQL, JSON, curl command, or text to process).
+For fake-data, input MUST be a JSON-encoded configuration string with fields, count, format (json/csv/sql), and optional seed. Supported fields: ${FAKE_DATA_FIELDS.join(", ")}.
+Example request "50 fake users with email and city as CSV": {"reply":"Open the generator to create 50 fake users with email and city as CSV.","tool":"fake-data","input":"{\\"fields\\":[\\"email\\",\\"city\\"],\\"count\\":50,\\"format\\":\\"csv\\"}"}.
+Use exactly the fields requested; map "name" to fullName. If no fields are specified use id, fullName, email, city, createdAt. Default to 10 rows and json unless requested otherwise. Generate fake data locally through this configuration rather than writing rows into input or reply. Never claim you have provided data or a file unless it is actually in reply; describe what opening the generator will do.
 Never ask for or repeat passwords, API keys or other secrets. If the user pastes one, tell them to rotate it.`;
 
 type Msg = { role: "user" | "assistant"; content: string };
@@ -91,10 +95,12 @@ function parse(content: string) {
   try {
     const obj = JSON.parse(json ?? content);
     const slug = typeof obj.tool === "string" && tools.some((t) => t.slug === obj.tool && t.status === "ready") ? obj.tool : undefined;
+    const input = slug && typeof obj.input === "string" ? obj.input.slice(0, 4000) : undefined;
+    const config = slug === "fake-data" && input ? parseFakeDataConfig(input) : null;
     return {
       reply: typeof obj.reply === "string" ? obj.reply : "",
       tool: slug,
-      input: slug && typeof obj.input === "string" ? obj.input.slice(0, 4000) : undefined,
+      input: slug === "fake-data" ? (config ? JSON.stringify(config) : undefined) : input,
     };
   } catch {
     return { reply: content, tool: undefined, input: undefined };
