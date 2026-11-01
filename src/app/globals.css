@@ -1,4 +1,5 @@
 :root {
+  --winner-height: 44px;
   --bg: #ffffff;
   --ink: #171717;
   --text: #171717;
@@ -46,6 +47,7 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; overflow-x: clip; }
 body {
+  padding-top: var(--winner-height);
   background: var(--bg);
   color: var(--text);
   font: 15px/1.55 var(--sans);
@@ -56,7 +58,7 @@ a { color: inherit; text-decoration: none; }
 .container { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
 
 /* ── Floating pill nav ───────────────────────── */
-.header { position: sticky; top: 12px; z-index: 30; padding: 0 16px; }
+.header { position: sticky; top: calc(var(--winner-height) + 12px); z-index: 30; padding: 0 16px; }
 .header-inner {
   max-width: 1120px; margin: 0 auto; display: flex; align-items: center; gap: 10px;
   height: 64px; padding: 0 10px 0 16px; border-radius: 99px;
@@ -222,7 +224,7 @@ th { font-size: 12px; color: var(--muted); font-weight: 600; background: var(--f
 
 @media (max-width: 900px) { .fan { transform: scale(.82); transform-origin: top center; margin-bottom: -20px; } }
 @media (max-width: 640px) {
-  .header { top: 8px; padding: 0 8px; }
+  .header { top: calc(var(--winner-height) + 8px); padding: 0 8px; }
   .header-inner { height: 56px; }
   .kbd-btn span.lbl, .badge { display: none; }
   .fan { height: 240px; transform: scale(.72); transform-origin: top center; margin-bottom: -40px; }
@@ -436,3 +438,53 @@ a:hover .signature { opacity: .8; }
 .tool-related span { font-size: 12.5px; color: var(--muted); }
 .crumb a:hover { color: var(--text); }
 @media (max-width: 760px) { .tool-about { grid-template-columns: 1fr; margin-top: -40px; } }
+
+/* First-place flag and a one-time bubble celebration. */
+.winner-banner {
+  position: fixed; inset: 0 0 auto; z-index: 50; height: var(--winner-height);
+  display: flex; align-items: center; justify-content: center; gap: 14px; padding: 0 16px;
+  background: #f8d65c; color: #332605; border-bottom: 1px solid #d8b539;
+  font-size: 12px; letter-spacing: -.015em;
+}
+.winner-banner:focus-visible { outline: 3px solid #171717; outline-offset: -4px; }
+.winner-banner:hover { background: #ffdf70; }
+.winner-flag { font-size: 25px; line-height: 1; transform: rotate(-9deg); }
+.winner-banner strong { font-weight: 750; }
+.winner-event { opacity: .75; }
+.winner-link { display: inline-flex; gap: 6px; align-items: center; font-weight: 600; border-left: 1px solid #33260530; padding-left: 14px; }
+.winner-celebration { position: fixed; inset: 0; z-index: 45; pointer-events: none; overflow: hidden; }
+.winner-bubble {
+  position: absolute; left: var(--bubble-left); bottom: -100px;
+  width: var(--bubble-size); height: var(--bubble-size); border-radius: 50%;
+  background: radial-gradient(circle at 30% 25%, #ffffffb8, transparent 43%), hsl(var(--bubble-hue) 95% 65% / .48);
+  border: 1px solid hsl(var(--bubble-hue) 85% 60% / .75);
+  box-shadow: inset -3px -5px 12px #a76c1110;
+  animation: winner-rise var(--bubble-duration) cubic-bezier(.22,.6,.36,1) var(--bubble-delay) both;
+}
+.winner-toast {
+  position: absolute; top: 24%; left: 50%; width: max-content; max-width: calc(100% - 32px);
+  display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 22px 30px;
+  border: 1px solid #e7cb76; border-radius: 24px; background: #fffdf4f2; color: #332605;
+  box-shadow: 0 16px 70px #80602120; text-align: center;
+  animation: winner-pop 3.3s cubic-bezier(.2,.8,.2,1) both;
+}
+.winner-toast > span:first-child { font-size: 32px; }
+.winner-toast strong { font-size: clamp(17px, 3vw, 23px); letter-spacing: -.04em; }
+.winner-toast > span:last-child { font-size: 12px; opacity: .7; }
+@keyframes winner-rise {
+  0% { transform: translate3d(0, 0, 0) scale(.55); opacity: 0; }
+  12% { opacity: .9; }
+  75% { opacity: .7; }
+  100% { transform: translate3d(var(--bubble-drift), calc(-100vh - 160px), 0) scale(1.2); opacity: 0; }
+}
+@keyframes winner-pop {
+  0% { opacity: 0; transform: translate(-50%, 18px) scale(.92); }
+  14%, 73% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -12px) scale(.98); }
+}
+@media (max-width: 540px) {
+  .winner-banner { gap: 9px; font-size: 11px; }
+  .winner-event { display: none; }
+  .winner-link { padding-left: 9px; }
+}
+@media (prefers-reduced-motion: reduce) { .winner-celebration { display: none; } }

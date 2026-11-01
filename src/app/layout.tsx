@@ -5,6 +5,7 @@ import { CommandPalette } from "@/components/CommandPalette";
 import { HelpWidget } from "@/components/HelpWidget";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { WinnerCelebration } from "@/components/WinnerCelebration";
 import { AUTHOR_X_HANDLE, SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/config";
 import "./globals.css";
 
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
+        <WinnerCelebration />
         <SiteHeader />
         <main className="container">{children}</main>
         <SiteFooter />
