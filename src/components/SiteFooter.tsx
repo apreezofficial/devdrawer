@@ -1,4 +1,4 @@
-import { AUTHOR_X_URL, GITHUB_URL, SITE_NAME } from "@/config";
+import { AUTHOR_SITE_URL, AUTHOR_X_URL, GITHUB_URL, SITE_NAME } from "@/config";
 import { tools } from "@/tools/registry";
 import { GlyphWordmark } from "./GlyphWordmark";
 import { Signature } from "./Signature";
@@ -26,7 +26,7 @@ export function SiteFooter() {
         </div>
 
         <div className="slab-bottom">
-          <a href={AUTHOR_X_URL} target="_blank" rel="noreferrer" aria-label="ap on X">
+          <a href={AUTHOR_SITE_URL} target="_blank" rel="noreferrer" aria-label="ap's portfolio">
             <Signature />
           </a>
           <a href={AUTHOR_X_URL} target="_blank" rel="noreferrer" aria-label="ap on X" className="slab-x">

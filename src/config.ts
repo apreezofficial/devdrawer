@@ -2,6 +2,7 @@
 export const SITE_NAME = "devdrawer";
 export const GITHUB_URL = "https://github.com/apreezofficial/devdrawer";
 export const AUTHOR_X_URL = "https://x.com/apcodesphere";
+export const AUTHOR_SITE_URL = "https://preciousadedokun.com.ng";
 export const SITE_URL = "https://www.devdrawer.xyz";
 export const AUTHOR_X_HANDLE = "@apcodesphere";
 export const SITE_TAGLINE = "Every tool a developer ends up Googling";
