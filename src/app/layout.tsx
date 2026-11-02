@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     "jwt decoder", "base64 encode decode", "qr code generator", "cron expression", "color picker", "image compressor",
     "fake data generator", "free developer utilities", "privacy friendly tools",
   ],
-  authors: [{ name: "ap", url: "https://x.com/apcodesphere" }],
+  authors: [{ name: "ap", url: "https://x.com/exdeveloper__" }],
   creator: "ap",
   verification: { google: "6oOtFBAfrY_VNePuX9khruR2TSwXjHBwuLeEMPBLvW8" },
   alternates: { canonical: "/" },
