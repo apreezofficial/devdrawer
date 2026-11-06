@@ -99,6 +99,7 @@ export function SiteHeader() {
               </div>
             )}
           </div>
+          <Link href="/api" onMouseEnter={hover}>API</Link>
           <a href={`${GITHUB_URL}/blob/main/CONTRIBUTING.md`} target="_blank" rel="noreferrer" onMouseEnter={hover}>Contribute</a>
         </nav>
 
